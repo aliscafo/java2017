@@ -5,7 +5,9 @@ public class HashTable {
     private int size;
     private int capacity;
 
-    // Prints HashTable in order to debug.
+    /**
+     * Prints HashTable in order to debug.
+     */
     public void printTable() {
         for (int i = 0; i < capacity; i++) {
             System.out.println(i);
@@ -21,12 +23,17 @@ public class HashTable {
         }
     }
 
-    // Constructs new HashTable with default capacity 1.
+    /**
+     * Constructs new HashTable with default capacity 1.
+     */
     public HashTable(){
         this(1);
     }
 
-    // Constructs new HashTable with particular capacity.
+    /**
+     * Constructs new HashTable with particular capacity.
+     * @param newCapacity - number of lists.
+     */
     public HashTable(int newCapacity){
         size = 0;
         capacity = newCapacity;
@@ -36,12 +43,19 @@ public class HashTable {
         }
     }
 
-    // Returns the number of elements in HashTable.
+    /**
+     * Returns the number of elements in HashTable.
+     * @return the number of elements in HashTable.
+     */
     public int size() {
         return size;
     }
 
-    // Checks whether the HashTable contains the particular element.
+    /**
+     * Checks whether the HashTable contains the particular element.
+     * @param key - key of the element that should be found.
+     * @return true if element with given key was found, false otherwise.
+     */
     public boolean contains(String key) {
         int pos = (key.hashCode() % capacity);
         if (lists[pos].find(key) != null)
@@ -49,7 +63,11 @@ public class HashTable {
         return false;
     }
 
-    // Returns the value of given key if this pair is in HashTable and null otherwise.
+    /**
+     * Returns the value of given key if this pair is in HashTable and null otherwise.
+     * @param key - key of the element that should be got.
+     * @return value if element with given key was found, null otherwise.
+     */
     public String get(String key) {
         int pos = (key.hashCode() % capacity);
 
@@ -79,8 +97,13 @@ public class HashTable {
         capacity *= 2;
     }
 
-    // Adds key-value pair into HashTable if there is not any elements with given key.
-    // Changes the value of the pair with this key otherwise.
+    /**
+     * Adds key-value pair into HashTable if there is not any elements with given key.
+     * Changes the value of the pair with this key otherwise.
+     * @param key is the key of new element.
+     * @param value is the value of new element.
+     * @return element with the given key that was replaced by the new one (with new value).
+     */
     public String put(String key, String value) {
         int pos = (key.hashCode() % capacity);
         String prevValue = lists[pos].put(key, value);
@@ -93,8 +116,12 @@ public class HashTable {
         return prevValue;
     }
 
-    // Tries to remove the element with given key. If such an element exists in HashTable it removes it and
-    // returns the value of it. Otherwise it returns null.
+    /**
+     * Tries to remove the element with given key. If such an element exists in HashTable it removes it and
+     * returns the value of it. Otherwise it returns null.
+     * @param key is the key of the element that should be deleted.
+     * @return the value of the element that was deleted, null if it doesn't exist.
+     */
     public String remove(String key) {
         int pos = (key.hashCode() % capacity);
         if (contains(key))
@@ -102,7 +129,9 @@ public class HashTable {
         return lists[pos].remove(key);
     }
 
-    // Clears all HashTable (removes all elements).
+    /**
+     * Clears all HashTable (removes all elements).
+     */
     public void clear() {
         for (int i = 0; i < capacity; i++) {
             lists[i] = new List();
