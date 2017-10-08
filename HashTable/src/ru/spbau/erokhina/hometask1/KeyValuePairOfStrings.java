@@ -1,7 +1,9 @@
 package ru.spbau.erokhina.hometask1;
 
+// Pair of key and value. All keys and values are strings.
 public class KeyValuePairOfStrings {
-    private String key, value;
+    private String key;
+    private String value;
 
     /**
      * Returns value of the key field.
