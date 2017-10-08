@@ -24,8 +24,6 @@ public class List {
      * Constructs new List instance with null pair and null next value.
      */
     public List () {
-        pair = null;
-        next = null;
     }
 
     /**
@@ -59,7 +57,8 @@ public class List {
      * @return previous value of the pair with the same key, null if it doesn't exist.
      */
     public String put(String key, String value) {
-        List tmp = this.next, prev = this;
+        List tmp = this.next;
+        List prev = this;
         while (tmp != null) {
             if (tmp.pair.key() == key) {
                 String prevValue = tmp.pair.value();
