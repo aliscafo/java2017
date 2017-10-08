@@ -28,14 +28,14 @@ public class HashTableTest {
     @Test
     public void contains() throws Exception {
         HashTable ht1 = new HashTable();
-        assertEquals(false, ht1.contains("keyA"));
+        assertFalse(ht1.contains("keyA"));
         ht1.put("keyA", "A");
         ht1.put("keyB", "B");
-        assertEquals(true, ht1.contains("keyA"));
+        assertTrue(ht1.contains("keyA"));
         ht1.remove("keyA");
-        assertEquals(false, ht1.contains("keyA"));
+        assertFalse(ht1.contains("keyA"));
         ht1.put("keyB", "B2");
-        assertEquals(true, ht1.contains("keyB"));
+        assertTrue(ht1.contains("keyB"));
     }
 
     /**
@@ -109,6 +109,16 @@ public class HashTableTest {
         ht1.put("keyE", "E");
         ht1.clear();
         assertEquals(0, ht1.size());
-        assertEquals(false, ht1.contains("keyA"));
+        assertFalse(ht1.contains("keyA"));
+    }
+
+    /**
+     * Checks correctness of the put method.
+     */
+    @Test
+    public void negativePutTest() {
+        HashTable ht1 = new HashTable();
+        ht1.put("keyA", "A");
+        ht1.put("Привет, мир!", "A");
     }
 }
