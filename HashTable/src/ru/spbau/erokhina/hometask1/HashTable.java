@@ -1,9 +1,14 @@
 package ru.spbau.erokhina.hometask1;
 
+/**
+ * A class that represents hash table -  data structure which implements an associative
+ * array abstract data type, a structure that can map keys to values.
+ */
 public class HashTable {
     private List lists[];
     private int size;
     private int capacity;
+    private static final long SHIFT = (long) 3e9;
 
     /**
      * Prints HashTable in order to debug.
@@ -35,7 +40,6 @@ public class HashTable {
      * @param newCapacity - number of lists.
      */
     public HashTable(int newCapacity){
-        size = 0;
         capacity = newCapacity;
         lists = new List[capacity];
         for (int i = 0; i < capacity; i++) {
@@ -57,10 +61,8 @@ public class HashTable {
      * @return true if element with given key was found, false otherwise.
      */
     public boolean contains(String key) {
-        int pos = (key.hashCode() % capacity);
-        if (lists[pos].find(key) != null)
-            return true;
-        return false;
+        int pos = (int) ((key.hashCode() + SHIFT) % capacity);
+        return (lists[pos].find(key) != null);
     }
 
     /**
@@ -69,14 +71,14 @@ public class HashTable {
      * @return value if element with given key was found, null otherwise.
      */
     public String get(String key) {
-        int pos = (key.hashCode() % capacity);
+        int pos = (int) ((key.hashCode() + SHIFT) % capacity);
 
         if (!contains(key))
             return null;
         return lists[pos].find(key).value();
     }
 
-    private void double_if_necessary() {
+    private void doubleIfNecessary() {
         if (size <= capacity)
             return;
 
@@ -88,7 +90,7 @@ public class HashTable {
         for (int i = 0; i < capacity; i++) {
             List tmp = lists[i].getNext();
             while (tmp != null) {
-                int newPos = (tmp.getPair().key().hashCode() % (2 * capacity));
+                int newPos = (int) ((tmp.getPair().key().hashCode() + SHIFT) % (2 * capacity));
                 newLists[newPos].put(tmp.getPair().key(), tmp.getPair().value());
                 tmp = tmp.getNext();
             }
@@ -105,13 +107,14 @@ public class HashTable {
      * @return element with the given key that was replaced by the new one (with new value).
      */
     public String put(String key, String value) {
-        int pos = (key.hashCode() % capacity);
+        int pos = (int) ((key.hashCode() + SHIFT) % capacity);
+
         String prevValue = lists[pos].put(key, value);
 
         if (prevValue == null)
             size++;
 
-        double_if_necessary();
+        doubleIfNecessary();
 
         return prevValue;
     }
@@ -123,7 +126,8 @@ public class HashTable {
      * @return the value of the element that was deleted, null if it doesn't exist.
      */
     public String remove(String key) {
-        int pos = (key.hashCode() % capacity);
+        int pos = (int) ((key.hashCode() + SHIFT) % capacity);
+
         if (contains(key))
             size--;
         return lists[pos].remove(key);
