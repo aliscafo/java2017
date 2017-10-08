@@ -4,24 +4,43 @@ public class List {
     private KeyValuePairOfStrings pair;
     private List next;
 
+    /**
+     * Gets the element of the list.
+     * @return the element of the list.
+     */
     public KeyValuePairOfStrings getPair() {
         return pair;
     }
 
+    /**
+     * Gets the next element of the list.
+     * @return the next element of the list.
+     */
     public List getNext() {
         return next;
     }
 
+    /**
+     * Constructs new List instance with null pair and null next value.
+     */
     public List () {
         pair = null;
         next = null;
     }
 
+    /**
+     * Constructs new List instance with given pair and null next value.
+     */
     public List(KeyValuePairOfStrings pair) {
         this.pair = pair;
         next = null;
     }
 
+    /**
+     * Returns the pair that has given key.
+     * @param findKey is the key of the element that should be found.
+     * @return the pair that has given key.
+     */
     public KeyValuePairOfStrings find(String findKey) {
         List tmp = this.next;
         while (tmp != null) {
@@ -32,6 +51,13 @@ public class List {
         return null;
     }
 
+    /**
+     * Adds element with given key and value at the end of the list or change the value of the pair with the given
+     * key if it exists.
+     * @param key is the key of new element.
+     * @param value id the value of new element.
+     * @return previous value of the pair with the same key, null if it doesn't exist.
+     */
     public String put(String key, String value) {
         List tmp = this.next, prev = this;
         while (tmp != null) {
@@ -47,6 +73,11 @@ public class List {
         return null;
     }
 
+    /**
+     * Removes the element with given key. Or does nothing it it doesn't exist.
+     * @param key the key of the element that should be deleted.
+     * @return the value of deleted element, null if it doesn't exist.
+     */
     public String remove(String key) {
         List tmp = this.next, prev = this;
         while (tmp != null) {
