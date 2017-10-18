@@ -1,0 +1,8 @@
+# ignore .idea/workspace 
+*/.idea/workspace.xml
+
+# ignore gradle
+*/.gradle/
+
+# ignore out
+*/out/
