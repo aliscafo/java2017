@@ -10,7 +10,6 @@ import java.util.Map;
  */
 public class Trie implements Serializable {
     private Vertex root = new Vertex();
-    private int size;
 
     /**
      * Adds element to this trie.
@@ -22,9 +21,6 @@ public class Trie implements Serializable {
             throw new IllegalArgumentException("Argument \"element\" is null.");
         }
         boolean result = root.add(element, 0);
-        if (result) {
-            size++;
-        }
         return result;
     }
 
@@ -51,8 +47,6 @@ public class Trie implements Serializable {
             throw new IllegalArgumentException("Argument \"element\" is null.");
         }
         boolean result = root.remove(element, 0);
-        if (result)
-            size--;
         return result;
     }
 
@@ -61,7 +55,7 @@ public class Trie implements Serializable {
      * @return the number of different elements (terminal nodes).
      */
     public int size() {
-        return size;
+        return root.getSize();
     }
 
     /**
@@ -83,7 +77,6 @@ public class Trie implements Serializable {
     public void serialize(OutputStream out) throws IOException {
         ObjectOutputStream outObject = new ObjectOutputStream(out);
         outObject.writeObject(root);
-        outObject.writeObject(size);
     }
 
     /**
@@ -93,7 +86,6 @@ public class Trie implements Serializable {
     public void deserialize(InputStream in) throws IOException, ClassNotFoundException {
         ObjectInputStream inObject = new ObjectInputStream(in);
         root = (Vertex)inObject.readObject();
-        size = (int)inObject.readObject();
     }
 
     private static class Vertex implements Serializable {
@@ -105,7 +97,7 @@ public class Trie implements Serializable {
             return size;
         }
 
-        boolean add(String element, int index) {
+        public boolean add(String element, int index) {
             if (index == element.length()) {
                 if (isTerminal)
                     return false;
@@ -124,7 +116,7 @@ public class Trie implements Serializable {
             return result;
         }
 
-        public boolean contains (String element, int index) {
+        public boolean contains(String element, int index) {
             if (index == element.length()) {
                 return isTerminal;
             }
@@ -136,7 +128,7 @@ public class Trie implements Serializable {
             return next.get(curChar).contains(element, index + 1);
         }
 
-        public boolean remove (String element, int index) {
+        public boolean remove(String element, int index) {
             if (index == element.length()) {
                 if (isTerminal) {
                     isTerminal = false;
@@ -160,7 +152,7 @@ public class Trie implements Serializable {
                 return size;
             }
             Character curChar = prefix.charAt(index);
-            if (next.containsKey(curChar) == false) {
+            if (!next.containsKey(curChar)) {
                 return 0;
             }
             return next.get(curChar).findPrefixSize(prefix, index + 1);
