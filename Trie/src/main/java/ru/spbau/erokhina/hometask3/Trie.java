@@ -107,7 +107,7 @@ public class Trie implements Serializable {
             }
 
             Character curChar = element.charAt(index);
-            if (next.containsKey(curChar) == false) {
+            if (!next.containsKey(curChar)) {
                 next.put(curChar, new Vertex());
             }
             boolean result = next.get(curChar).add(element, index + 1);
