@@ -138,7 +138,7 @@ public class Trie implements Serializable {
                 return false;
             }
             Character curChar = element.charAt(index);
-            if (next.containsKey(curChar) == false) {
+            if (!next.containsKey(curChar)) {
                 return false;
             }
             boolean result = next.get(curChar).remove(element, index + 1);
