@@ -1,6 +1,7 @@
 package ru.spbau.erokhina.calculate;
 
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
@@ -116,5 +117,33 @@ public class Calculator {
         }
 
         return stackInt.pop();
+    }
+
+    public static void main (String args[]) throws Exception {
+        String action = args[0];
+        String str = args[1];
+
+        if (action.equals("") || str.equals("")) {
+            System.out.println("Hi! Please, choose action:");
+            System.out.println("---> Type \"toPostfix\" and an expression in infix notation to transform it to postfix notation.");
+            System.out.println("---> Type \"calculate\" and an expression in postfix notation to calculate it.");
+        }
+
+        Stack<Integer> stackInt = new Stack<>();
+        Stack<Character> stackChar = new Stack<>();
+        Calculator calc = new Calculator(stackInt, stackChar);
+
+        if (action.equals("toPostfix")) {
+            System.out.println("toPostfix:");
+
+            System.out.println(calc.toPostfix(str));
+        }
+        else if (action.equals("calculate")) {
+            System.out.println("calculate:");
+
+            System.out.println(calc.calculate(str));
+        }
+        else
+            System.out.println("Unknown option. Try again!");
     }
 }
