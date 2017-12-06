@@ -6,3 +6,6 @@
 
 # ignore out
 */out/
+
+#ignore DS_Store
+.DS_Store
