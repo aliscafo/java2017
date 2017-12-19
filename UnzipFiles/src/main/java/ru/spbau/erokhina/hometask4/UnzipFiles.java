@@ -13,19 +13,20 @@ import java.util.zip.ZipInputStream;
  */
 public class UnzipFiles {
     private String extension;
+    private static final int EXTENSION_SIZE = 4;
 
     /**
      * Constructor for UnzipFiles class.
-     * @param fileExtension - extension of files.
+     * @param fileExtension extension of files.
      */
-    UnzipFiles (String fileExtension) {
+    UnzipFiles(String fileExtension) {
         extension = fileExtension;
     }
 
     /**
      * Method that unzips files in all archive (in this path) that match with given regex.
-     * @param path - given path of archives.
-     * @param regEx - given regex.
+     * @param path given path of archives.
+     * @param regEx given regex.
      */
     public void UnzipFilesRegex(String path, String regEx) throws IOException {
         File pathFolder = new File(path);
@@ -37,7 +38,7 @@ public class UnzipFiles {
             }
 
             ZipFile zipFile = new ZipFile(file);
-            try(ZipInputStream inputStream =
+            try (ZipInputStream inputStream =
                     new ZipInputStream(new FileInputStream(zipFile.getName()))) {
 
                 for (ZipEntry entry = inputStream.getNextEntry(); entry != null; entry = inputStream.getNextEntry()) {
@@ -45,7 +46,8 @@ public class UnzipFiles {
                         continue;
                     }
 
-                    String archiveDirectoryPath = file.getAbsolutePath().substring(0, file.getAbsolutePath().length() - 4);
+                    String archiveDirectoryPath = file.getAbsolutePath().substring(0,
+                            file.getAbsolutePath().length() - EXTENSION_SIZE);
                     File folder = new File(archiveDirectoryPath);
 
                     if (!folder.exists()) {
@@ -56,7 +58,7 @@ public class UnzipFiles {
                     new File(newFile.getParent()).mkdirs();
                     newFile.createNewFile();
 
-                    try(FileOutputStream outputStream = new FileOutputStream(newFile)) {
+                    try (FileOutputStream outputStream = new FileOutputStream(newFile)) {
                         byte[] buff = new byte[1024];
 
                         int size;
