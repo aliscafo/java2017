@@ -9,6 +9,14 @@ import java.util.zip.ZipOutputStream;
 import static org.junit.Assert.*;
 
 public class UnzipFilesTest {
+    private void newEntry(String name, String text, ZipOutputStream outputStream) throws IOException {
+        ZipEntry entry = new ZipEntry(name);
+
+        outputStream.putNextEntry(entry);
+        byte[] data = text.getBytes();
+        outputStream.write(data, 0, data.length);
+    }
+
     /**
      * Method for testing unzipping files that match with regex.
      */
@@ -20,27 +28,11 @@ public class UnzipFilesTest {
         File newArchive = new File(folder.getAbsolutePath() + File.separator + "archive.zip");
         newArchive.createNewFile();
 
-        try(ZipOutputStream outStream = new ZipOutputStream(new FileOutputStream(newArchive))) {
-            ZipEntry entry1 = new ZipEntry("test1.txt");
-            ZipEntry entry2 = new ZipEntry("test2.txt");
-            ZipEntry entry3 = new ZipEntry("test3.txt");
-            ZipEntry entry4 = new ZipEntry("badTest.txt");
-
-            outStream.putNextEntry(entry1);
-            byte[] data = "Just first text for testing.".getBytes();
-            outStream.write(data, 0, data.length);
-
-            outStream.putNextEntry(entry2);
-            data = "Just second text for testing.".getBytes();
-            outStream.write(data, 0, data.length);
-
-            outStream.putNextEntry(entry3);
-            data = "Just third text for testing.".getBytes();
-            outStream.write(data, 0, data.length);
-
-            outStream.putNextEntry(entry4);
-            data = "Just bad text for testing.".getBytes();
-            outStream.write(data, 0, data.length);
+        try (ZipOutputStream outStream = new ZipOutputStream(new FileOutputStream(newArchive))) {
+            newEntry("test1.txt", "Just first text for testing.", outStream);
+            newEntry("test2.txt", "Just second text for testing.", outStream);
+            newEntry("test3.txt", "Just third text for testing.", outStream);
+            newEntry("badTest.txt", "Just bad text for testing.", outStream);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -71,8 +63,9 @@ public class UnzipFilesTest {
                 folder + File.separator + "archive" + File.separator + "badTest.txt");
         assertFalse(badFile.exists());
 
-        for(File f : folder.listFiles())
+        for (File f : folder.listFiles()) {
             f.delete();
+        }
         folder.delete();
     }
 }
