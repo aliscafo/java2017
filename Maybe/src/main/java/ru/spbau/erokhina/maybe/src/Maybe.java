@@ -1,5 +1,7 @@
 package ru.spbau.erokhina.maybe.src;
 
+import com.sun.istack.internal.NotNull;
+
 import java.io.*;
 import java.util.Scanner;
 import java.util.function.Function;
@@ -8,35 +10,35 @@ import java.util.function.Function;
  * Class that represents option type that may or may not contain a meaningful value.
  */
 public class Maybe<T> {
-    T value;
+    private T value;
+    private static final Maybe NOTHING = new Maybe<>();
 
-    private Maybe (T t) {
+    private Maybe(T t) {
         value = t;
     }
 
-    private Maybe () {
+    private Maybe() {
         value = null;
     }
 
     /**
      * Creates new instance of Maybe that stores meaningful value.
-     * @param t - given value.
-     * @param <T> - type of value.
+     * @param t given value.
+     * @param <T> type of value.
      * @return new instance of Maybe with given value.
      */
-    public static <T> Maybe<T> just(T t) {
-        Maybe newMaybe = new Maybe(t);
+    public static <T> Maybe<T> just(@NotNull T t) {
+        Maybe<T> newMaybe = new Maybe<>(t);
         return newMaybe;
     }
 
     /**
      * Creates new instance of Maybe without stored value.
-     * @param <T> - type of potential values.
+     * @param <T> type of potential values.
      * @return new instance of Maybe without stored value.
      */
     public static <T> Maybe<T> nothing() {
-        Maybe newMaybe = new Maybe();
-        return newMaybe;
+        return NOTHING;
     }
 
     /**
@@ -56,30 +58,27 @@ public class Maybe<T> {
      * @return true if value exists. False otherwise.
      */
     public boolean isPresent() {
-        if (value == null) {
-            return false;
-        }
-        return true;
+        return value != null;
     }
 
     /**
      * Gets function and applies it to value of current Maybe. Returns new Maybe instance with
      * returned value by the function. Returns empty Maybe if current Maybe is empty.
-     * @param mapper - given function.
-     * @param <U> - type of returned value.
+     * @param mapper given function.
+     * @param <U> type of returned value.
      * @return Returns new Maybe instance with returned value by the function.
      * Returns empty Maybe if current Maybe is empty.
      */
-    public <U> Maybe<U> map(Function<T, U> mapper) {
+    public <U> Maybe<U> map(Function<? super T, U> mapper) {
         if (!isPresent()) {
-            return new Maybe<>();
+            return NOTHING;
         }
         return new Maybe<>(mapper.apply(value));
     }
 
     /**
      * Tries to read integer number from current line of scanner.
-     * @param scanner - given scanner.
+     * @param scanner given scanner.
      * @return Maybe instance with read number.
      * @throws FileNotFoundException if there is not number in the line.
      */
@@ -90,20 +89,5 @@ public class Maybe<T> {
         } catch (NumberFormatException ex) {
             return Maybe.nothing();
         }
-    }
-
-    /**
-     * Writes given value using given writer or "null" if value is null.
-     * @param writer - given writer.
-     * @param num - given number.
-     * @throws IOException
-     */
-    public static void writeNumOrNull(Writer writer, Integer num) throws IOException {
-        if (num == null) {
-            writer.write("null\n");
-            return;
-        }
-        Integer numSqr = new Integer(num * num);
-        writer.write(numSqr.toString() + "\n");
     }
 }

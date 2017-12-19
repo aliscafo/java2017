@@ -19,13 +19,13 @@ public class MaybeTest {
     @Test
     public void just() throws Exception {
         Maybe<Integer> newMaybe = Maybe.just(10);
-        assertTrue(newMaybe.get().equals(10));
+        assertEquals(newMaybe.get(), (Integer)10);
     }
 
     /**
      * Test for checking correctness of nothing method.
      */
-    @Test (expected = ExceptionMaybe.class)
+    @Test(expected = ExceptionMaybe.class)
     public void nothing() throws Exception {
         Maybe<Integer> newMaybe = Maybe.nothing();
         newMaybe.get();
@@ -43,7 +43,7 @@ public class MaybeTest {
         assertTrue(newMaybeStr.get().equals("abacaba"));
 
         Maybe<Boolean> newMaybeBool = Maybe.just(true);
-        assertTrue(newMaybeBool.get().equals(true));
+        assertTrue(newMaybeBool.get());
     }
 
     /**
@@ -91,7 +91,7 @@ public class MaybeTest {
     @Test
     public void mapJustInt() throws Exception {
         Maybe<Integer> newMaybeInt = Maybe.just(10);
-        assertTrue(newMaybeInt.map(x -> x*40).get().equals(400));
+        assertTrue(newMaybeInt.map(x -> x * 40).get().equals(400));
     }
 
     /**
@@ -110,6 +110,21 @@ public class MaybeTest {
     public void mapNothing() throws Exception {
         Maybe<Integer> newMaybeInt = Maybe.nothing();
         newMaybeInt.map(x -> x*40).get();
+    }
+
+    /**
+     * Writes given value using given writer or "null" if value is null.
+     * @param writer given writer.
+     * @param num given number.
+     * @throws IOException
+     */
+    private void writeNumOrNull(Writer writer, Integer num) throws IOException {
+        if (num == null) {
+            writer.write("null\n");
+            return;
+        }
+        Integer numSqr = new Integer(num * num);
+        writer.write(numSqr.toString() + "\n");
     }
 
     /**
@@ -139,10 +154,10 @@ public class MaybeTest {
             assertEquals(expectedPres[i], isPres);
 
             if (!isPres)
-                Maybe.writeNumOrNull(writer, null);
+                writeNumOrNull(writer, null);
             else {
                 assertTrue(maybe.get().equals(expectedNums[i]));
-                Maybe.writeNumOrNull(writer, maybe.get());
+                writeNumOrNull(writer, maybe.get());
             }
         }
         writer.close();
