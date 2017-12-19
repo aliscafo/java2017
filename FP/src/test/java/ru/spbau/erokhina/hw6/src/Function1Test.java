@@ -15,19 +15,9 @@ public class Function1Test {
      */
     @Test
     public void composeNormalCase() throws Exception {
-        Function1<Integer, Integer> sqr = new Function1<Integer, Integer>() {
-            @Override
-            public Integer apply(Integer x) {
-                return x*x;
-            }
-        };
+        Function1<Integer, Integer> sqr = x -> x * x;
 
-        Function1<Integer, Integer> plus3 = new Function1<Integer, Integer>() {
-            @Override
-            public Integer apply(Integer x) {
-                return x + 3;
-            }
-        };
+        Function1<Integer, Integer> plus3 = x -> x + 3;
 
         assertTrue(plus3.compose(sqr).apply(4).equals(49));
     }
@@ -37,19 +27,9 @@ public class Function1Test {
      */
     @Test
     public void composeNormalCaseString() throws Exception {
-        Function1<String, String> doubleS = new Function1<String, String>() {
-            @Override
-            public String apply(String x) {
-                return x + x;
-            }
-        };
+        Function1<String, String> doubleS = x -> x + x;
 
-        Function1<String, String> addDot = new Function1<String, String>() {
-            @Override
-            public String apply(String x) {
-                return x + ".";
-            }
-        };
+        Function1<String, String> addDot = x -> x + ".";
 
         assertTrue(doubleS.compose(addDot).apply("ha").equals("haha."));
     }
@@ -59,12 +39,7 @@ public class Function1Test {
      */
     @Test
     public void applyNormalCase() throws Exception {
-        Function1<Integer, Integer> prod5 = new Function1<Integer, Integer>() {
-            @Override
-            public Integer apply(Integer x) {
-                return x*5;
-            }
-        };
+        Function1<Integer, Integer> prod5 = x -> x * 5;
 
         assertTrue(prod5.apply(4).equals(20));
     }

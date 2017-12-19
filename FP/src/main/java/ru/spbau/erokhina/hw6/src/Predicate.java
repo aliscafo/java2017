@@ -10,7 +10,7 @@ public interface Predicate<X> extends Function1<X, Boolean> {
      * @param snd - argument, second predicate.
      * @return predicate that is disjuncture of current predicate and the argument.
      */
-    default Predicate<X> or (Predicate<X> snd) {
+    default Predicate<X> or (Predicate<? super X> snd) {
         return x -> (this.apply(x) || snd.apply(x));
     }
 
@@ -19,7 +19,7 @@ public interface Predicate<X> extends Function1<X, Boolean> {
      * @param snd - argument, second predicate.
      * @return predicate that is conjuncture of current predicate and the argument.
      */
-    default Predicate<X> and (Predicate<X> snd) {
+    default Predicate<X> and (Predicate<? super X> snd) {
         return x -> (this.apply(x) && snd.apply(x));
     }
 
@@ -36,7 +36,7 @@ public interface Predicate<X> extends Function1<X, Boolean> {
      * @param <X> - type of the argument.
      * @return always "true".
      */
-    static <X> Predicate<X> ALWAYS_TRUE () {
+    static <X> Predicate<X> alwaysTrue () {
         return x -> true;
     }
     /**
@@ -44,7 +44,7 @@ public interface Predicate<X> extends Function1<X, Boolean> {
      * @param <X> - type of the argument.
      * @return always "false".
      */
-    static <X> Predicate<X> ALWAYS_FALSE () {
+    static <X> Predicate<X> alwaysFalse () {
         return x -> false;
     }
 }

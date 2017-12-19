@@ -5,6 +5,7 @@ package ru.spbau.erokhina.hw6.src;
  * @param <X> - type of argument.
  * @param <Y> - type of returned value.
  */
+@FunctionalInterface
 public interface Function1<X, Y> {
     /**
      * Composes two functions to one: g(f(x)).
@@ -12,7 +13,7 @@ public interface Function1<X, Y> {
      * @param <U> - type of returned value of the outside function.
      * @return function with one argument and one returned value.
      */
-    default <U> Function1<X, U> compose(Function1<Y, U> g) {
+    default <U> Function1<X, U> compose(Function1<? super Y, U> g) {
         return x -> g.apply(this.apply(x));
     }
 
@@ -21,5 +22,5 @@ public interface Function1<X, Y> {
      * @param x - type of the argument.
      * @return returned value after application.
      */
-    Y apply (X x);
+    Y apply(X x);
 }

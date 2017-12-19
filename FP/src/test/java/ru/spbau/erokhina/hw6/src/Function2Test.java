@@ -13,19 +13,9 @@ public class Function2Test {
      */
     @Test
     public void composeNormalCase() throws Exception {
-        Function2<Integer, Integer, Integer> sum = new Function2<Integer, Integer, Integer>() {
-            @Override
-            public Integer apply(Integer x, Integer y) {
-                return x + y;
-            }
-        };
+        Function2<Integer, Integer, Integer> sum = (x, y) -> x + y;
 
-        Function1<Integer, Integer> sqr = new Function1<Integer, Integer>() {
-            @Override
-            public Integer apply(Integer x) {
-                return x*x;
-            }
-        };
+        Function1<Integer, Integer> sqr = x -> x * x;
 
         assertTrue(sum.compose(sqr).apply(5, 3).equals(64));
     }
@@ -35,13 +25,7 @@ public class Function2Test {
      */
     @Test
     public void bind1NormalCase() throws Exception {
-        Function2<Integer, Integer, Integer> sum = new Function2<Integer, Integer, Integer>() {
-            @Override
-            public Integer apply(Integer x, Integer y) {
-                return x + y;
-            }
-        };
-
+        Function2<Integer, Integer, Integer> sum = (x, y) -> x + y;
         Function1 func1 = sum.bind1(5);
 
         assertTrue(func1.apply(6).equals(11));
@@ -52,12 +36,7 @@ public class Function2Test {
      */
     @Test
     public void bind1String() throws Exception {
-        Function2<String, String, String> concat = new Function2<String, String, String>() {
-            @Override
-            public String apply(String x, String y) {
-                return x + y;
-            }
-        };
+        Function2<String, String, String> concat = (x, y) -> x + y;
 
         Function1 func1 = concat.bind1("be ");
 
@@ -69,12 +48,7 @@ public class Function2Test {
      */
     @Test
     public void bind2NormalCase() throws Exception {
-        Function2<Integer, Integer, Integer> sum = new Function2<Integer, Integer, Integer>() {
-            @Override
-            public Integer apply(Integer x, Integer y) {
-                return x + y;
-            }
-        };
+        Function2<Integer, Integer, Integer> sum = (x, y) -> x + y;
 
         Function1 func1 = sum.bind2(5);
 
@@ -86,12 +60,7 @@ public class Function2Test {
      */
     @Test
     public void bind2String() throws Exception {
-        Function2<String, String, String> concat = new Function2<String, String, String>() {
-            @Override
-            public String apply(String x, String y) {
-                return x + y;
-            }
-        };
+        Function2<String, String, String> concat = (x, y) -> x + y;
 
         Function1 func1 = concat.bind2("!");
 
@@ -103,12 +72,7 @@ public class Function2Test {
      */
     @Test
     public void curry() throws Exception {
-        Function2<Integer, Integer, Integer> sum = new Function2<Integer, Integer, Integer>() {
-            @Override
-            public Integer apply(Integer x, Integer y) {
-                return x + y;
-            }
-        };
+        Function2<Integer, Integer, Integer> sum = (x, y) -> x + y;
 
         assertTrue(sum.curry().apply(5).apply(6).equals(11));
     }
@@ -118,12 +82,7 @@ public class Function2Test {
      */
     @Test
     public void apply() throws Exception {
-        Function2<Integer, Integer, Integer> sum = new Function2<Integer, Integer, Integer>() {
-            @Override
-            public Integer apply(Integer x, Integer y) {
-                return 2 * x + 3 * y;
-            }
-        };
+        Function2<Integer, Integer, Integer> sum = (x, y) -> 2 * x + 3 * y;
 
         assertTrue(sum.apply(10,100).equals(320));
     }

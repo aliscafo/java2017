@@ -13,19 +13,9 @@ public class PredicateTest {
      */
     @Test
     public void andNormalCase() throws Exception {
-        Predicate<Integer> lessThan10 = new Predicate<Integer>() {
-            @Override
-            public Boolean apply(Integer x) {
-                return x < 10;
-            }
-        };
+        Predicate<Integer> lessThan10 = x -> x < 10;
 
-        Predicate<Integer> moreThan0 = new Predicate<Integer>() {
-            @Override
-            public Boolean apply(Integer x) {
-                return x > 0;
-            }
-        };
+        Predicate<Integer> moreThan0 = x -> x > 0;
 
         assertTrue(lessThan10.and(moreThan0).apply(5).equals(true));
         assertTrue(lessThan10.and(moreThan0).apply(11).equals(false));
@@ -37,19 +27,9 @@ public class PredicateTest {
      */
     @Test
     public void orNormalCase() throws Exception {
-        Predicate<Integer> moreThan10 = new Predicate<Integer>() {
-            @Override
-            public Boolean apply(Integer x) {
-                return x > 10;
-            }
-        };
+        Predicate<Integer> moreThan10 = x -> x > 10;
 
-        Predicate<Integer> lessThan0 = new Predicate<Integer>() {
-            @Override
-            public Boolean apply(Integer x) {
-                return x < 0;
-            }
-        };
+        Predicate<Integer> lessThan0 = x -> x < 0;
 
         assertTrue(moreThan10.or(lessThan0).apply(5).equals(false));
         assertTrue(moreThan10.or(lessThan0).apply(287).equals(true));
@@ -61,12 +41,7 @@ public class PredicateTest {
      */
     @Test
     public void notNormalCase() throws Exception {
-        Predicate<String> isEmpty = new Predicate<String>() {
-            @Override
-            public Boolean apply(String str) {
-                return str.length() == 0;
-            }
-        };
+        Predicate<String> isEmpty = str -> str.length() == 0;
 
         assertTrue(isEmpty.not().apply("aba").equals(true));
     }
@@ -76,7 +51,7 @@ public class PredicateTest {
      */
     @Test
     public void ALWAYS_TRUENormalCase() throws Exception {
-        assertTrue(Predicate.ALWAYS_TRUE().apply(5));
+        assertTrue(Predicate.alwaysTrue().apply(5));
     }
 
     /**
@@ -84,6 +59,6 @@ public class PredicateTest {
      */
     @Test
     public void ALWAYS_FALSENormalCase() throws Exception {
-        assertFalse(Predicate.ALWAYS_FALSE().apply(5));
+        assertFalse(Predicate.alwaysFalse().apply(5));
     }
 }

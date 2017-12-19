@@ -22,14 +22,9 @@ public class CollectionsTest {
 
         List<Integer> expectedList = new ArrayList<>();
         for (int i = 0; i < 5; i++)
-            expectedList.add(i*i);
+            expectedList.add(i * i);
 
-        Function1<Integer, Integer> sqr = new Function1<Integer, Integer>() {
-            @Override
-            public Integer apply(Integer x) {
-                return x*x;
-            }
-        };
+        Function1<Integer, Integer> sqr = x -> x * x;
 
         ArrayList<Integer> res = (ArrayList<Integer>) Collections.map(sqr, list);
 
@@ -57,12 +52,7 @@ public class CollectionsTest {
         expectedList.add("ZZZBBB");
         expectedList.add("VVVZZZ");
 
-        Predicate<String> containsZ = new Predicate<String>() {
-            @Override
-            public Boolean apply(String str) {
-                return str.contains("Z");
-            }
-        };
+        Predicate<String> containsZ = str -> str.contains("Z");
 
         ArrayList<String> res = (ArrayList<String>) Collections.filter(containsZ, list);
 
@@ -92,12 +82,7 @@ public class CollectionsTest {
         expectedList.add("qwerty");
         expectedList.add("foo");
 
-        Predicate<String> notEmpty = new Predicate<String>() {
-            @Override
-            public Boolean apply(String str) {
-                return str.length() > 0;
-            }
-        };
+        Predicate<String> notEmpty = str -> str.length() > 0;
 
         ArrayList<String> res = (ArrayList<String>) Collections.takeWhile(notEmpty, list);
 
@@ -120,12 +105,7 @@ public class CollectionsTest {
         for (int i = 6; i < 11; i++)
             expectedList.add(i);
 
-        Predicate<Integer> moreThen10 = new Predicate<Integer>() {
-            @Override
-            public Boolean apply(Integer x) {
-                return 10 < x;
-            }
-        };
+        Predicate<Integer> moreThen10 = x -> 10 < x;
 
         ArrayList<Integer> res = (ArrayList<Integer>) Collections.takeUnless(moreThen10, list);
 
@@ -145,12 +125,7 @@ public class CollectionsTest {
         for (int i = 1; i < 6; i++)
             list.add(i);
 
-        Function2<Integer, Integer, Integer> prod = new Function2<Integer, Integer, Integer>() {
-            @Override
-            public Integer apply(Integer x, Integer y) {
-                return x * y;
-            }
-        };
+        Function2<Integer, Integer, Integer> prod = (x, y) -> x * y;
 
         Integer res = Collections.foldl(prod, 1, list);
 
@@ -169,12 +144,7 @@ public class CollectionsTest {
         list.add("d");
         list.add("e");
 
-        Function2<String, String, String> concat = new Function2<String, String, String>() {
-            @Override
-            public String apply(String x, String y) {
-                return x + y;
-            }
-        };
+        Function2<String, String, String> concat = (x, y) -> x + y;
 
         String res = Collections.foldl(concat, "START", list);
 
@@ -193,12 +163,7 @@ public class CollectionsTest {
         list.add("d");
         list.add("e");
 
-        Function2<String, String, String> concat = new Function2<String, String, String>() {
-            @Override
-            public String apply(String x, String y) {
-                return x + y;
-            }
-        };
+        Function2<String, String, String> concat = (x, y) -> x + y;
 
         String res = Collections.foldr(concat, "START", list);
 

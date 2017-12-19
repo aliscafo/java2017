@@ -22,7 +22,7 @@ public interface Function2<X, Y, Z> {
      * @param x - type of first argument.
      * @return a function with only one argument instead of two.
      */
-    default Function1<Y, Z> bind1 (X x) {
+    default Function1<Y, Z> bind1(X x) {
         return y -> this.apply(x, y);
     }
 
@@ -31,7 +31,7 @@ public interface Function2<X, Y, Z> {
      * @param y - type of second argument.
      * @return a function with only one argument instead of two.
      */
-    default Function1<X, Z> bind2 (Y y) {
+    default Function1<X, Z> bind2(Y y) {
         return x -> this.apply(x, y);
     }
 
@@ -39,7 +39,7 @@ public interface Function2<X, Y, Z> {
      * Currying. Returns function with one argument.
      * @return function with one argument.
      */
-    default Function1<X, Function1<Y, Z>> curry () {
+    default Function1<X, Function1<Y, Z>> curry() {
         return x -> (y -> this.apply(x, y));
     }
 
@@ -49,5 +49,5 @@ public interface Function2<X, Y, Z> {
      * @param y - type of the second argument.
      * @return returned value after application.
      */
-    Z apply (X x, Y y);
+    Z apply(X x, Y y);
 }
