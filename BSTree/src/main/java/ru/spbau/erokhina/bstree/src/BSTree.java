@@ -5,13 +5,13 @@ package ru.spbau.erokhina.bstree.src;
  * @param <T> - type of elements in tree.
  */
 public class BSTree<T extends Comparable> {
-    Node root;
-    int size;
+    private Node root;
+    private int size;
 
-    class Node {
-        T value;
-        Node left;
-        Node right;
+    private class Node {
+        private T value;
+        private Node left;
+        private Node right;
 
         Node(T newValue, Node newLeft, Node newRight) {
             value = newValue;
@@ -25,9 +25,10 @@ public class BSTree<T extends Comparable> {
      * @param newEl - given element.
      * @return element that was added.
      */
-    public T add (T newEl) {
-        if (contains(newEl))
+    public T add(T newEl) {
+        if (contains(newEl)) {
             return newEl;
+        }
         size++;
 
         if (root == null) {
@@ -53,8 +54,7 @@ public class BSTree<T extends Comparable> {
 
         if (isLeft) {
             prev.left = tmp;
-        }
-        else {
+        } else {
             prev.right = tmp;
         }
 
@@ -76,9 +76,7 @@ public class BSTree<T extends Comparable> {
                 tmp = tmp.right;
             }
         }
-        if (tmp == null)
-            return false;
-        return true;
+        return tmp != null;
     }
 
     /**

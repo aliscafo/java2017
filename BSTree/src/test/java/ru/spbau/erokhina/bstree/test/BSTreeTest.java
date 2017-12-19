@@ -1,5 +1,6 @@
 package ru.spbau.erokhina.bstree.test;
 
+import org.junit.Before;
 import org.junit.Test;
 import ru.spbau.erokhina.bstree.src.BSTree;
 
@@ -9,21 +10,28 @@ import static org.junit.Assert.*;
  * Class for testing BSTree class.
  */
 public class BSTreeTest {
+    private BSTree<Integer> treeInt;
+    private BSTree<String> treeStr;
+
+    @Before
+    public void initTree() {
+        treeInt = new BSTree<>();
+        treeStr = new BSTree<>();
+    }
+
     /**
      * Just normal case for checking add method (for Integer parameter).
      */
     @Test
     public void addNormalCaseInteger() {
-        BSTree<Integer> tree = new BSTree();
+        treeInt.add(5);
+        assertTrue(treeInt.contains(5));
 
-        tree.add(5);
-        assertTrue(tree.contains(5));
+        treeInt.add(4);
+        assertTrue(treeInt.contains(4));
 
-        tree.add(4);
-        assertTrue(tree.contains(4));
-
-        tree.add(1);
-        assertTrue(tree.contains(1));
+        treeInt.add(1);
+        assertTrue(treeInt.contains(1));
     }
 
     /**
@@ -31,16 +39,14 @@ public class BSTreeTest {
      */
     @Test
     public void addNormalCaseString() {
-        BSTree<String> tree = new BSTree();
+        treeStr.add("A");
+        assertTrue(treeStr.contains("A"));
 
-        tree.add("A");
-        assertTrue(tree.contains("A"));
+        treeStr.add("B");
+        assertTrue(treeStr.contains("B"));
 
-        tree.add("B");
-        assertTrue(tree.contains("B"));
-
-        tree.add("C");
-        assertTrue(tree.contains("C"));
+        treeStr.add("C");
+        assertTrue(treeStr.contains("C"));
     }
 
     /**
@@ -48,13 +54,11 @@ public class BSTreeTest {
      */
     @Test
     public void addSameElements() {
-        BSTree<String> tree = new BSTree();
+        treeStr.add("A");
+        assertTrue(treeStr.contains("A"));
 
-        tree.add("A");
-        assertTrue(tree.contains("A"));
-
-        tree.add("A");
-        assertEquals(tree.size(), 1);
+        treeStr.add("A");
+        assertEquals(1, treeStr.size());
     }
 
     /**
@@ -62,16 +66,14 @@ public class BSTreeTest {
      */
     @Test
     public void containsNormalCase() {
-        BSTree<String> tree = new BSTree();
+        assertFalse(treeStr.contains("A"));
+        assertFalse(treeStr.contains("B"));
 
-        assertFalse(tree.contains("A"));
-        assertFalse(tree.contains("B"));
+        treeStr.add("A");
+        treeStr.add("B");
 
-        tree.add("A");
-        tree.add("B");
-
-        assertTrue(tree.contains("A"));
-        assertTrue(tree.contains("B"));
+        assertTrue(treeStr.contains("A"));
+        assertTrue(treeStr.contains("B"));
     }
 
     /**
@@ -79,17 +81,15 @@ public class BSTreeTest {
      */
     @Test
     public void sizeNormalCase() {
-        BSTree<String> tree = new BSTree();
+        assertEquals(0, treeInt.size());
 
-        assertEquals(0, tree.size());
+        treeStr.add("A");
+        assertEquals(1, treeStr.size());
 
-        tree.add("A");
-        assertEquals(1, tree.size());
+        treeStr.add("B");
+        assertEquals(2, treeStr.size());
 
-        tree.add("B");
-        assertEquals(2, tree.size());
-
-        tree.add("A");
-        assertEquals(2, tree.size());
+        treeStr.add("A");
+        assertEquals(2, treeStr.size());
     }
 }
