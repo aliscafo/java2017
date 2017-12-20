@@ -205,7 +205,21 @@ public class SmartListTest {
         list.remove(2);
         list.remove(2);
         assertEquals(Arrays.asList(2, 3, 700, 800), list);
+    }
+    
+    /**
+     * Testing of clear method.
+     */
+    @Test
+    public void testClear() throws Exception {
+        List<Integer> list = new SmartList<>();
+        for (int i = 0; i < 5; i++) {
+            list.add(i + 1);
+        }
 
+        list.clear();
+
+        assertEquals(Collections.<Integer>emptyList(), list);
     }
 
     private static <T> List<T> newList() {
