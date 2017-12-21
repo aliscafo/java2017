@@ -1,8 +1,8 @@
 package ru.spbau.erokhina.mytreeset;
 
+import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 
 import static org.junit.Assert.*;
@@ -11,13 +11,18 @@ import static org.junit.Assert.*;
  * Class for testing method of MyTreeSetImpl.
  */
 public class MyTreeSetImplTest {
+    private MyTreeSetImpl <Integer> tree;
+
+    @Before
+    public void before() {
+        tree = new MyTreeSetImpl<>();
+    }
 
     /**
      * Testing add method.
      */
     @Test
     public void testAdd() throws Exception {
-        MyTreeSetImpl <Integer> tree = new MyTreeSetImpl<>();
         assertTrue(tree.add(3));
         assertTrue(tree.add(2));
         assertTrue(tree.add(1));
@@ -34,7 +39,6 @@ public class MyTreeSetImplTest {
      */
     @Test
     public void testRemove() throws Exception {
-        MyTreeSetImpl <Integer> tree = new MyTreeSetImpl<>();
         tree.add(1);
         tree.add(2);
         tree.add(3);
@@ -58,7 +62,6 @@ public class MyTreeSetImplTest {
      */
     @Test
     public void testSize() throws Exception {
-        MyTreeSetImpl <Integer> tree = new MyTreeSetImpl<>();
         tree.add(1);
         tree.add(2);
         tree.add(3);
@@ -73,7 +76,6 @@ public class MyTreeSetImplTest {
      */
     @Test
     public void testContains() throws Exception {
-        MyTreeSetImpl <Integer> tree = new MyTreeSetImpl<>();
         tree.add(1);
         tree.add(2);
         tree.add(3);
@@ -94,7 +96,6 @@ public class MyTreeSetImplTest {
      */
     @Test
     public void testHigher() throws Exception {
-        MyTreeSetImpl <Integer> tree = new MyTreeSetImpl<>();
         tree.add(1);
         tree.add(10);
         tree.add(100);
@@ -117,7 +118,6 @@ public class MyTreeSetImplTest {
      */
     @Test
     public void testLower() throws Exception {
-        MyTreeSetImpl <Integer> tree = new MyTreeSetImpl<>();
         tree.add(1);
         tree.add(10);
         tree.add(100);
@@ -140,7 +140,6 @@ public class MyTreeSetImplTest {
      */
     @Test
     public void testFloor() throws Exception {
-        MyTreeSetImpl <Integer> tree = new MyTreeSetImpl<>();
         tree.add(1);
         tree.add(10);
         tree.add(100);
@@ -163,7 +162,6 @@ public class MyTreeSetImplTest {
      */
     @Test
     public void testCeiling() throws Exception {
-        MyTreeSetImpl <Integer> tree = new MyTreeSetImpl<>();
         tree.add(1);
         tree.add(10);
         tree.add(100);
@@ -186,7 +184,6 @@ public class MyTreeSetImplTest {
      */
     @Test
     public void testIterator() throws Exception {
-        MyTreeSetImpl <Integer> tree = new MyTreeSetImpl<>();
         tree.add(66);
         tree.add(44);
         tree.add(55);
@@ -201,7 +198,7 @@ public class MyTreeSetImplTest {
             assertTrue(it.hasNext());
             Integer elem = it.next();
 
-            assertTrue(elem.equals(i*11));
+            assertTrue(elem.equals(i * 11));
             i++;
         }
         assertFalse(it.hasNext());
@@ -212,7 +209,6 @@ public class MyTreeSetImplTest {
      */
     @Test
     public void testDescendingIterator() throws Exception {
-        MyTreeSetImpl <Integer> tree = new MyTreeSetImpl<>();
         tree.add(66);
         tree.add(44);
         tree.add(55);
@@ -238,7 +234,6 @@ public class MyTreeSetImplTest {
      */
     @Test
     public void testFirst() throws Exception {
-        MyTreeSetImpl <Integer> tree = new MyTreeSetImpl<>();
         tree.add(66);
         tree.add(44);
         tree.add(55);
@@ -254,7 +249,6 @@ public class MyTreeSetImplTest {
      */
     @Test
     public void testLast() throws Exception {
-        MyTreeSetImpl <Integer> tree = new MyTreeSetImpl<>();
         tree.add(66);
         tree.add(44);
         tree.add(55);
@@ -270,7 +264,6 @@ public class MyTreeSetImplTest {
      */
     @Test
     public void testDescendingSet() throws Exception {
-        MyTreeSetImpl <Integer> tree = new MyTreeSetImpl<>();
         tree.add(66);
         tree.add(44);
         tree.add(55);

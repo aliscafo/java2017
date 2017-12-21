@@ -7,23 +7,23 @@ import java.util.Iterator;
 
 /**
  * Implementation of MyTreeSet interface.
- * @param <E> - type of elements in set.
+ * @param <E> type of elements in set.
  */
 public class MyTreeSetImpl<E> extends AbstractSet<E> implements MyTreeSet<E> {
-    private Node root;
-    private Node minNode;
-    private Node maxNode;
-    public int size;
+    private Node<E> root;
+    private Node<E> minNode;
+    private Node<E> maxNode;
+    private int size;
 
-    Comparator<? super E> comparator;
+    private Comparator<? super E> comparator;
 
-    private class Node {
-        Node left;
-        Node right;
-        Node parent;
-        E value;
+    private static class Node<E> {
+        private Node<E> left;
+        private Node<E> right;
+        private Node<E> parent;
+        private E value;
 
-        Node (E newValue) {
+        Node(E newValue) {
             value = newValue;
         }
 
@@ -31,31 +31,31 @@ public class MyTreeSetImpl<E> extends AbstractSet<E> implements MyTreeSet<E> {
             return value;
         }
 
-        Node getLeft () {
+        public Node<E> getLeft() {
             return left;
         }
 
-        Node getRight () {
+        public Node<E> getRight() {
             return right;
         }
 
-        Node getParent () {
+        public Node<E> getParent() {
             return parent;
         }
 
-        void setLeft (Node l) {
+        public void setLeft(Node<E> l) {
             left = l;
         }
 
-        void setRight (Node r) {
+        public void setRight(Node<E> r) {
             right = r;
         }
 
-        void setParent (Node pr) {
+        public void setParent(Node<E> pr) {
             parent = pr;
         }
 
-        void setValue (E newValue) {
+        public void setValue(E newValue) {
             value = newValue;
         }
     }
@@ -63,78 +63,82 @@ public class MyTreeSetImpl<E> extends AbstractSet<E> implements MyTreeSet<E> {
     /**
      * Constructor without parameters.
      */
-    public MyTreeSetImpl () {
+    public MyTreeSetImpl() {
         comparator = (a, b) -> ((Comparable)a).compareTo(b);
     }
 
     /**
      * Constructor with one parameter - comparator.
-     * @param comp - comparator.
+     * @param comp comparator.
      */
-    public MyTreeSetImpl (Comparator<? super E> comp) {
+    public MyTreeSetImpl(Comparator<? super E> comp) {
         comparator = comp;
     }
 
-    private Node minSubtree (Node subTree) {
-        Node cur = subTree;
+    private Node<E> minSubtree(Node<E> subTree) {
+        Node<E> cur = subTree;
 
-        while (cur.getLeft() != null)
+        while (cur.getLeft() != null) {
             cur = cur.getLeft();
+        }
 
         return cur;
     }
 
-    private Node maxSubtree (Node subTree) {
-        Node cur = subTree;
+    private Node<E> maxSubtree(Node<E> subTree) {
+        Node<E> cur = subTree;
 
-        while (cur.getRight() != null)
+        while (cur.getRight() != null) {
             cur = cur.getRight();
+        }
 
         return cur;
     }
 
     /**
      * Adds element to the set.
-     * @param e - element that should be added to the set.
+     * @param e element that should be added to the set.
      * @return true if element was added. False if it is already in the set.
      */
     @Override
     public boolean add(E e) {
-        Node newNode = new Node(e);
-
         if (maxNode == null || comparator.compare(e, maxNode.getValue()) > 0) {
+            Node<E> newNode = new Node<>(e);
             maxNode = newNode;
         }
 
         if (minNode == null || comparator.compare(e, minNode.getValue()) < 0) {
+            Node<E> newNode = new Node<>(e);
             minNode = newNode;
         }
 
         if (root == null) {
+            Node<E> newNode = new Node<>(e);
             root = newNode;
             size++;
             return true;
         }
 
-        Node cur = root;
+        Node<E> cur = root;
 
         while (true) {
-            int resOfCompare = comparator.compare(cur.getValue(), e);
+            final int resOfCompare = comparator.compare(cur.getValue(), e);
 
             if (resOfCompare == 0) {
                 return false;
             }
             else if (resOfCompare > 0) {
                 if (cur.getLeft() == null) {
+                    Node<E> newNode = new Node<>(e);
                     cur.setLeft(newNode);
                     newNode.setParent(cur);
                     size++;
                     return true;
                 }
                 cur = cur.getLeft();
-            }
-            else {
+            } else {
                 if (cur.getRight() == null) {
+                    Node<E> newNode = new Node<>(e);
                     cur.setRight(newNode);
                     newNode.setParent(cur);
                     size++;
@@ -145,26 +149,26 @@ public class MyTreeSetImpl<E> extends AbstractSet<E> implements MyTreeSet<E> {
         }
     }
 
-    private Node recRemove (Node root, Object z) {
+    private Node<E> recRemove(Node<E> root, Object obj) {
         if (root == null) {
             return root;
         }
 
-        if (comparator.compare(root.getValue(), (E) z) > 0) {
-            Node l = recRemove(root.getLeft(), z);
+        if (comparator.compare(root.getValue(), (E) obj) > 0) {
+            Node<E> l = recRemove(root.getLeft(), obj);
             root.setLeft(l);
             if (l != null)
                 l.setParent(root);
         }
-        else if (comparator.compare(root.getValue(), (E) z) < 0) {
-            Node r = recRemove(root.getRight(), z);
+        else if (comparator.compare(root.getValue(), (E) obj) < 0) {
+            Node<E> r = recRemove(root.getRight(), obj);
             root.setRight(r);
             if (r != null)
                 r.setParent(root);
         }
         else if (root.getLeft() != null && root.getRight() != null) {
             root.setValue(minSubtree(root.getRight()).getValue());
-            Node r = recRemove(root.getRight(), root.getValue());
+            Node<E> r = recRemove(root.getRight(), root.getValue());
             root.setRight(r);
             if (r != null)
                 r.setParent(root);
@@ -172,11 +176,9 @@ public class MyTreeSetImpl<E> extends AbstractSet<E> implements MyTreeSet<E> {
         else {
             if (root.getLeft() != null) {
                 root = root.getLeft();
-                //root.setParent(root.getLeft());
             }
             else {
                 root = root.getRight();
-                //root.setParent(root.getRight());
             }
         }
 
@@ -185,15 +187,15 @@ public class MyTreeSetImpl<E> extends AbstractSet<E> implements MyTreeSet<E> {
 
     /**
      * Removes element from the set.
-     * @param o - element that shold be removed.
+     * @param obj element that shold be removed.
      * @return true if the element was removed from the set. False if it wasn't there.
      */
     @Override
-    public boolean remove(Object o) {
-        if (!contains((E) o))
+    public boolean remove(Object obj) {
+        if (!contains((E) obj))
             return false;
         size--;
-        recRemove(root, (E) o);
+        recRemove(root, (E) obj);
         return true;
     }
 
@@ -204,7 +206,7 @@ public class MyTreeSetImpl<E> extends AbstractSet<E> implements MyTreeSet<E> {
     @Override
     public Iterator<E> iterator() {
         return new Iterator<E>() {
-            private Node curNode = minNode;
+            private Node<E> curNode = minNode;
 
             @Override
             public boolean hasNext() {
@@ -245,7 +247,7 @@ public class MyTreeSetImpl<E> extends AbstractSet<E> implements MyTreeSet<E> {
     @Override
     public Iterator<E> descendingIterator() {
         return new Iterator<E>() {
-            private Node curNode = maxNode;
+            private Node<E> curNode = maxNode;
 
             @Override
             public boolean hasNext() {
@@ -420,7 +422,7 @@ public class MyTreeSetImpl<E> extends AbstractSet<E> implements MyTreeSet<E> {
         return maxNode.getValue();
     }
 
-    private E recLower(Node cur, E e) {
+    private E recLower(Node<E> cur, E e) {
         if (cur == null)
             return null;
 
@@ -438,7 +440,7 @@ public class MyTreeSetImpl<E> extends AbstractSet<E> implements MyTreeSet<E> {
     /**
      * Returns the greatest element in this set strictly less than the given element,
      * or null if there is no such element.
-     * @param e - a given element.
+     * @param e a given element.
      * @return the greatest element in this set strictly less than the given element, or null if there is no such
      * element.
      */
@@ -449,7 +451,7 @@ public class MyTreeSetImpl<E> extends AbstractSet<E> implements MyTreeSet<E> {
 
     /**
      * Returns true if this set contains the specified element.
-     * @param o - specified element.
+     * @param o specified element.
      * @return true if this set contains the specified element.
      */
     @Override
@@ -457,8 +459,8 @@ public class MyTreeSetImpl<E> extends AbstractSet<E> implements MyTreeSet<E> {
         return (findPrecise((E) o) != null);
     }
 
-    private Node findPrecise (E e) {
-        Node cur = root;
+    private Node<E> findPrecise (E e) {
+        Node<E> cur = root;
 
         while (true) {
             if (cur == null)
@@ -475,7 +477,7 @@ public class MyTreeSetImpl<E> extends AbstractSet<E> implements MyTreeSet<E> {
     /**
      * Returns the greatest element in this set less than or equal to the given element, or null if
      * there is no such element.
-     * @param e - given element.
+     * @param e given element.
      * @return the greatest element in this set less than or equal to the given element, or null if there
      * is no such element.
      */
@@ -489,7 +491,7 @@ public class MyTreeSetImpl<E> extends AbstractSet<E> implements MyTreeSet<E> {
     /**
      * Returns the least element in this set greater than or equal to the given element, or null if there is
      * no such element.
-     * @param e - given element.
+     * @param e given element.
      * @return the least element in this set greater than or equal to the given element, or null if there is
      * no such element.
      */
@@ -500,7 +502,7 @@ public class MyTreeSetImpl<E> extends AbstractSet<E> implements MyTreeSet<E> {
         return higher(e);
     }
 
-    private E recHigher(Node cur, E e) {
+    private E recHigher(Node<E> cur, E e) {
         if (cur == null)
             return null;
 
@@ -518,7 +520,7 @@ public class MyTreeSetImpl<E> extends AbstractSet<E> implements MyTreeSet<E> {
     /**
      * Returns the least element in this set strictly greater than the given element, or null if there is
      * no such element.
-     * @param e - given element.
+     * @param e given element.
      * @return the least element in this set strictly greater than the given element, or null if there is
      * no such element.
      */
