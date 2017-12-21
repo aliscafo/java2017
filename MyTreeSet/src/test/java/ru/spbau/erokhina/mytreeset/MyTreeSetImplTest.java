@@ -299,7 +299,7 @@ public class MyTreeSetImplTest {
             assertTrue(it.hasNext());
             Integer elem = it.next();
 
-            assertTrue(elem.equals(i*11));
+            assertTrue(elem.equals(i * 11));
             i--;
         }
 
