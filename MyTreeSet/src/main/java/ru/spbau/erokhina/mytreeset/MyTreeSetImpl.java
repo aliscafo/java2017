@@ -126,8 +126,7 @@ public class MyTreeSetImpl<E> extends AbstractSet<E> implements MyTreeSet<E> {
 
             if (resOfCompare == 0) {
                 return false;
-            }
-            else if (resOfCompare > 0) {
+            } else if (resOfCompare > 0) {
                 if (cur.getLeft() == null) {
                     Node<E> newNode = new Node<>(e);
                     cur.setLeft(newNode);

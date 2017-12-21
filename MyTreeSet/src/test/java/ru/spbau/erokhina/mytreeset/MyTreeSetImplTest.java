@@ -58,6 +58,22 @@ public class MyTreeSetImplTest {
     }
 
     /**
+     * Testing remove method.
+     */
+    @Test
+    public void testComplexRemove() throws Exception {
+        tree.add(2);
+        tree.add(3);
+        tree.add(1);
+
+        assertTrue(tree.remove(2));
+        assertFalse(tree.contains(2));
+
+        assertTrue(tree.remove(1));
+        assertFalse(tree.contains(1));
+    }
+
+    /**
      * Testing size method.
      */
     @Test
@@ -223,7 +239,7 @@ public class MyTreeSetImplTest {
             assertTrue(it.hasNext());
             Integer elem = it.next();
 
-            assertTrue(elem.equals(i*11));
+            assertTrue(elem.equals(i * 11));
             i--;
         }
         assertFalse(it.hasNext());
