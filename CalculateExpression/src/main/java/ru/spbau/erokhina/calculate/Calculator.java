@@ -16,10 +16,10 @@ public class Calculator {
     private static final HashMap<Character, BiFunction<Integer, Integer, Integer>> operatorsMap;
     static {
         operatorsMap = new HashMap<>();
-        operatorsMap.put('+', (x, y) -> {return x + y; });
-        operatorsMap.put('-', (x, y) -> {return x - y; });
-        operatorsMap.put('*', (x, y) -> {return x * y; });
-        operatorsMap.put('/', (x, y) -> {return x / y; });
+        operatorsMap.put('+', (x, y) -> x + y);
+        operatorsMap.put('-', (x, y) -> x - y);
+        operatorsMap.put('*', (x, y) -> x * y);
+        operatorsMap.put('/', (x, y) -> x / y);
     }
     private static final HashMap<Character, Integer> priorities;
     static {
@@ -36,15 +36,15 @@ public class Calculator {
      * @param infixExpression given expression.
      * @return expression in postfix notation.
      */
-    String toPostfix (String infixExpression) throws Exception {
+    String toPostfix(String infixExpression) throws Exception {
         infixExpression = infixExpression.replaceAll(" ", "");
-        String postfixExpression = "";
+        StringBuilder postfixExpression = new StringBuilder();
 
         for (int i = 0; i < infixExpression.length(); i++) {
             Character token = infixExpression.charAt(i);
 
             if (Character.isDigit(token)) {
-                postfixExpression += token;
+                postfixExpression.append(token);
             }
             else if (token.equals('(')) {
                 stackChar.push(token);
@@ -54,7 +54,7 @@ public class Calculator {
                     Character top = stackChar.pop();
                     if (top.equals('('))
                         break;
-                    postfixExpression += top;
+                    postfixExpression.append(top);
                 }
             }
             else {
@@ -66,7 +66,7 @@ public class Calculator {
                         stackChar.push(top);
                         break;
                     }
-                    postfixExpression += top;
+                    postfixExpression.append(top);
                 }
                 stackChar.push(token);
             }
@@ -76,10 +76,10 @@ public class Calculator {
             if (stackChar.size() == 0)
                 break;
             Character top = stackChar.pop();
-            postfixExpression += top;
+            postfixExpression.append(top);
         }
 
-        return postfixExpression.replaceAll("", " ").trim();
+        return postfixExpression.toString().replaceAll("", " ").trim();
     }
 
     /**
@@ -87,7 +87,7 @@ public class Calculator {
      * @param newStackInt stack for storing integers.
      * @param newStackChar stack for storing characters.
      */
-    Calculator (Stack<Integer> newStackInt, Stack<Character> newStackChar) {
+    Calculator(Stack<Integer> newStackInt, Stack<Character> newStackChar) {
         stackInt = newStackInt;
         stackChar = newStackChar;
     }
@@ -107,7 +107,7 @@ public class Calculator {
                 Integer b = stackInt.pop();
                 Integer a = stackInt.pop();
 
-                BiFunction op = operatorsMap.get(token);
+                BiFunction<Integer, Integer, Integer> op = operatorsMap.get(token);
 
                 stackInt.push((Integer) op.apply(a, b));
             }
