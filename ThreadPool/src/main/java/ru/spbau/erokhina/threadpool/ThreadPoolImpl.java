@@ -170,7 +170,7 @@ public class ThreadPoolImpl implements ThreadPool {
                 }
                 result = (U) function.apply(parent.get());
                 if (parent.hasException()) {
-                    exception = new LightExecutionException(parent.getException());
+                    throw parent.getException();
                 }
             }
             catch (Exception e) {
