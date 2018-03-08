@@ -103,6 +103,9 @@ public class ThreadPoolImpl implements ThreadPool {
                 exception = new LightExecutionException(e);
             }
             isReady = true;
+            synchronized (this) {
+                notifyAll();
+            }
         }
     }
 
