@@ -88,7 +88,7 @@ public class ThreadPoolImplTest {
         assertTrue(flag);
     }
 
-    @Test
+    @Test(timeout=2000)
     public void thenApplyInnerTasksTest() throws Exception {
         ThreadPool threadPool = new ThreadPoolImpl(7);
         LightFuture<Integer> task0 = threadPool.add(() -> 100);
