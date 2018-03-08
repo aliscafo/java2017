@@ -13,7 +13,7 @@ import static org.junit.Assert.*;
  */
 public class ThreadPoolImplTest {
     private final ArrayList<Integer> list = new ArrayList<>();
-/*
+
     @Test
     public void oneThreadTest() throws InterruptedException, LightExecutionException {
         ThreadPool pool = new ThreadPoolImpl(1);
@@ -31,7 +31,7 @@ public class ThreadPoolImplTest {
 
         assertTrue(task.get());
     }
-*/
+
     @Test(timeout=2000)
     public void simpleTest() throws Exception {
         ThreadPool threadPool = new ThreadPoolImpl(5);
