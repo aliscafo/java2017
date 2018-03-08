@@ -178,7 +178,7 @@ public class ThreadPoolImpl implements ThreadPool {
             } finally {
                 isReady = true;
                 synchronized (this) {
-                    notify();
+                    notifyAll();
                 }
             }
 
