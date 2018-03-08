@@ -153,7 +153,7 @@ public class ThreadPoolImpl implements ThreadPool {
 
         @Override
         public LightFuture thenApply(Function function) {
-            Task newTask = new Task(() -> function.apply(result));
+            AbstractTask newTask = new HasParent(this, function);
             synchronized (tasks) {
                 tasks.add(newTask);
                 tasks.notifyAll();
