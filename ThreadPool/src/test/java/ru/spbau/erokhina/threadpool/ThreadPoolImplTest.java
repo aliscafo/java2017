@@ -48,7 +48,7 @@ public class ThreadPoolImplTest {
         while (list.size() != 50) {}
         threadPool.shutdown();
     }
-/*
+
     @Test(timeout=2000)
     public void thenApplySimple() throws InterruptedException, LightExecutionException {
         ThreadPool threadPool = new ThreadPoolImpl(5);
@@ -62,7 +62,7 @@ public class ThreadPoolImplTest {
         while (!future2.isReady()) {}
         assertEquals(49, future2.get().intValue());
     }
-
+/*
     @Test
     public void shutdownTest() throws InterruptedException, LightExecutionException {
         ThreadPool threadPool = new ThreadPoolImpl(5);
