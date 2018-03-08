@@ -62,7 +62,7 @@ public class ThreadPoolImplTest {
         while (!future2.isReady()) {}
         assertEquals(49, future2.get().intValue());
     }
-/*
+
     @Test
     public void shutdownTest() throws InterruptedException, LightExecutionException {
         ThreadPool threadPool = new ThreadPoolImpl(5);
@@ -87,7 +87,7 @@ public class ThreadPoolImplTest {
 
         assertTrue(flag);
     }
-*/
+
     @Test
     public void thenApplyInnerTasksTest() throws Exception {
         ThreadPool threadPool = new ThreadPoolImpl(7);
@@ -96,12 +96,10 @@ public class ThreadPoolImplTest {
         LightFuture<Integer> task1 = task0.thenApply(o -> o + 1);
         LightFuture<Integer> task2 = task1.thenApply(o -> o + 1);
         LightFuture<Integer> task3 = task2.thenApply(o -> o + 1);
-        LightFuture<Integer> task4 = task3.thenApply(o -> o + 1);
-        LightFuture<Integer> task5 = task4.thenApply(o -> o + 1);
 
-        while (!task5.isReady()) {}
+        while (!task3.isReady()) {}
 
-        assertEquals(105, (int) task5.get());
+        assertEquals(105, (int) task3.get());
         threadPool.shutdown();
     }
 
