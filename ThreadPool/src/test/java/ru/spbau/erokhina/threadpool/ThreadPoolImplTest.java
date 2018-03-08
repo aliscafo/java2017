@@ -99,7 +99,7 @@ public class ThreadPoolImplTest {
 
         while (!task3.isReady()) {}
 
-        assertEquals(105, (int) task3.get());
+        assertEquals(103, (int) task3.get());
         threadPool.shutdown();
     }
 
