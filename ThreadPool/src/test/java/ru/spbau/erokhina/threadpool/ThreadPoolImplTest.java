@@ -12,7 +12,7 @@ import static org.junit.Assert.*;
  * Class for ThreadPoolImpl testing.
  */
 public class ThreadPoolImplTest {
-    private volatile ArrayList<Integer> list = new ArrayList<>();
+    private final ArrayList<Integer> list = new ArrayList<>();
 
     @Test
     public void oneThreadTest() throws InterruptedException, LightExecutionException {
@@ -45,7 +45,7 @@ public class ThreadPoolImplTest {
             });
         }
 
-        while (list.size() != 50);
+        while (list.size() != 50) {}
         threadPool.shutdown();
     }
 
@@ -54,12 +54,12 @@ public class ThreadPoolImplTest {
         ThreadPool threadPool = new ThreadPoolImpl(5);
         LightFuture<Integer> future = threadPool.add(() -> 40);
 
-        while (!future.isReady());
+        while (!future.isReady()) {}
 
         assertEquals(40, future.get().intValue());
         LightFuture<Integer> future2 = future.thenApply(x -> x + 9);
 
-        while (!future2.isReady());
+        while (!future2.isReady()) {}
         assertEquals(49, future2.get().intValue());
     }
 
@@ -71,7 +71,7 @@ public class ThreadPoolImplTest {
             list.add(threadPool.add(() -> {
                 try {
                     Thread.sleep(1);
-                } catch (InterruptedException e) {
+                } catch (InterruptedException ignored) {
                 }
                 return true;}));
         }
@@ -99,7 +99,7 @@ public class ThreadPoolImplTest {
         LightFuture<Integer> task4 = task3.thenApply(o -> o + 1);
         LightFuture<Integer> task5 = task4.thenApply(o -> o + 1);
 
-        while (!task5.isReady());
+        while (!task5.isReady()) {}
 
         assertEquals(105, (int) task5.get());
         threadPool.shutdown();

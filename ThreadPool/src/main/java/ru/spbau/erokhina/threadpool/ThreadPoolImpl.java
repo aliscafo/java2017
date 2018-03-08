@@ -1,7 +1,5 @@
 package ru.spbau.erokhina.threadpool;
 
-import sun.tools.jconsole.Worker;
-
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -11,15 +9,16 @@ import java.util.function.Supplier;
 /**
  * Class for achieving concurrency of execution of tasks.
  */
+@SuppressWarnings("unchecked")
 public class ThreadPoolImpl implements ThreadPool {
-    private Queue<AbstractTask> tasks = new LinkedList<>();
+    private final Queue<AbstractTask> tasks = new LinkedList<>();
     private ArrayList<Thread> threads = new ArrayList<>();
 
     /**
      * Constructor for creating ThreadPoolImpl.
      * @param n a number of threads
      */
-    public ThreadPoolImpl(int n) {
+    ThreadPoolImpl(int n) {
         for(int i = 0; i < n; i++) {
             Thread thread = new Thread(new ThreadRunner());
             threads.add(thread);
@@ -74,7 +73,7 @@ public class ThreadPoolImpl implements ThreadPool {
                 synchronized (this) {
                     try {
                         wait();
-                    } catch (InterruptedException e) {
+                    } catch (InterruptedException ignored) {
                     }
                 }
             }
@@ -140,7 +139,7 @@ public class ThreadPoolImpl implements ThreadPool {
                 synchronized (this) {
                     try {
                         wait();
-                    } catch (InterruptedException e) {
+                    } catch (InterruptedException ignored) {
                     }
                 }
             }
@@ -194,7 +193,7 @@ public class ThreadPoolImpl implements ThreadPool {
      */
     @Override
     public <T> LightFuture<T> add(Supplier<T> supplier) {
-        Task newTask = new Task(supplier);
+        AbstractTask newTask = new Task<>(supplier);
         synchronized (tasks) {
             tasks.add(newTask);
             tasks.notifyAll();
@@ -224,8 +223,7 @@ public class ThreadPoolImpl implements ThreadPool {
                     }
 
                 }
-            } catch (InterruptedException e) {
-                return;
+            } catch (InterruptedException ignored) {
             }
         }
     }
