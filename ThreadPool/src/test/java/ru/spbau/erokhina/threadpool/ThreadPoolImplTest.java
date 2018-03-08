@@ -93,9 +93,9 @@ public class ThreadPoolImplTest {
         ThreadPool threadPool = new ThreadPoolImpl(7);
         LightFuture<Integer> task0 = threadPool.add(() -> 100);
 
-        LightFuture<Integer> task1 = task0.thenApply(o -> o + 1);
-        LightFuture<Integer> task2 = task1.thenApply(o -> o + 1);
-        LightFuture<Integer> task3 = task2.thenApply(o -> o + 1);
+        LightFuture<Integer> task1 = task0.thenApply(o -> {synchronized (o) {o += 1;} return o;});
+        LightFuture<Integer> task2 = task1.thenApply(o -> {synchronized (o) {o += 1;} return o;});
+        LightFuture<Integer> task3 = task2.thenApply(o -> {synchronized (o) {o += 1;} return o;});
 
         while (!task3.isReady()) {}
 
