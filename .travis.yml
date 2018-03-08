@@ -1,0 +1,7 @@
+sudo: false 
+language: java 
+before_install: 
+- chmod +x ThreadPool/gradlew 
+script: 
+- cd ThreadPool 
+- ./gradlew build
