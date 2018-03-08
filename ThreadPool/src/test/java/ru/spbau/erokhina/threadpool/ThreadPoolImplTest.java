@@ -95,10 +95,11 @@ public class ThreadPoolImplTest {
 
         LightFuture<Integer> task1 = task0.thenApply(o -> o + 1);
         LightFuture<Integer> task2 = task1.thenApply(o -> o + 1);
+        LightFuture<Integer> task3 = task2.thenApply(o -> o + 1);
 
-        while (!task2.isReady()) {}
+        while (!task3.isReady()) {}
 
-        assertEquals(102, (int) task2.get());
+        assertEquals(103, (int) task3.get());
         threadPool.shutdown();
     }
 
