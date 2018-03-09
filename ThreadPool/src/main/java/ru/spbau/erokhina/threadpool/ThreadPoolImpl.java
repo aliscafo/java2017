@@ -103,6 +103,9 @@ public class ThreadPoolImpl implements ThreadPool {
                 exception = new LightExecutionException(e);
             }
             isReady = true;
+            synchronized (this) {
+                notifyAll();
+            }
         }
     }
 
@@ -153,7 +156,7 @@ public class ThreadPoolImpl implements ThreadPool {
 
         @Override
         public LightFuture thenApply(Function function) {
-            Task newTask = new Task(() -> function.apply(result));
+            AbstractTask newTask = new HasParent(this, function);
             synchronized (tasks) {
                 tasks.add(newTask);
                 tasks.notifyAll();
@@ -170,7 +173,7 @@ public class ThreadPoolImpl implements ThreadPool {
                 }
                 result = (U) function.apply(parent.get());
                 if (parent.hasException()) {
-                    exception = new LightExecutionException(parent.getException());
+                    throw parent.getException();
                 }
             }
             catch (Exception e) {
@@ -178,7 +181,7 @@ public class ThreadPoolImpl implements ThreadPool {
             } finally {
                 isReady = true;
                 synchronized (this) {
-                    notify();
+                    notifyAll();
                 }
             }
 
