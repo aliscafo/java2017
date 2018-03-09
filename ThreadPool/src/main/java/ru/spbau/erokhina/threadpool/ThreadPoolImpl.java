@@ -101,10 +101,8 @@ public class ThreadPoolImpl implements ThreadPool {
             }
             catch (Exception e) {
                 exception = new LightExecutionException(e);
-            }
-            isReady = true;
-            synchronized (this) {
-                notifyAll();
+            } finally {
+                isReady = true;
             }
         }
     }
@@ -180,9 +178,6 @@ public class ThreadPoolImpl implements ThreadPool {
                 exception = new LightExecutionException(e);
             } finally {
                 isReady = true;
-                synchronized (this) {
-                    notifyAll();
-                }
             }
 
         }

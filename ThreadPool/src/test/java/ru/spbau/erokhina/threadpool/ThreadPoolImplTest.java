@@ -88,19 +88,4 @@ public class ThreadPoolImplTest {
         assertTrue(flag);
     }
 
-    @Test(timeout=2000)
-    public void thenApplyInnerTasksTest() throws Exception {
-        ThreadPool threadPool = new ThreadPoolImpl(7);
-        LightFuture<Boolean> task0 = threadPool.add(() -> true);
-
-        LightFuture<Boolean> task1 = task0.thenApply(o -> !o);
-        LightFuture<Boolean> task2 = task1.thenApply(o -> !o);
-
-        while (!task2.isReady()) {}
-
-        assertEquals(true, (boolean) task2.get());
-        threadPool.shutdown();
-    }
-
-
 }
