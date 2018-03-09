@@ -167,8 +167,8 @@ public class ThreadPoolImpl implements ThreadPool {
         public void run() {
             try {
                 while (!parent.isReady()) {
-                    synchronized (this) {
-                        wait();
+                    synchronized (parent) {
+                        parent.wait();
                     }
                 }
                 result = (U) function.apply(parent.get());
