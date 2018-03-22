@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.effect.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: paleturquoise;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.spbau.erokhina.tictactoe.Controller">
+   <left>
+      <Pane prefHeight="252.0" prefWidth="74.0" BorderPane.alignment="CENTER" />
+   </left>
+   <right>
+      <Pane prefHeight="252.0" prefWidth="273.0" BorderPane.alignment="CENTER">
+         <children>
+            <TextField fx:id="game_result" alignment="TOP_CENTER" editable="false" focusTraversable="false" layoutX="1.0" layoutY="194.0" prefHeight="54.0" prefWidth="271.0" style="-fx-background-color: paleturquoise; -fx-font-size: 30; -fx-font-family: Courier New;" />
+            <TextField fx:id="player_o" editable="false" focusTraversable="false" layoutX="26.0" layoutY="81.0" prefHeight="45.0" prefWidth="134.0" style="-fx-background-color: paleturquoise; -fx-font-size: 20; -fx-font-family: Courier New;" />
+            <TextField fx:id="player_x" editable="false" focusTraversable="false" layoutX="26.0" layoutY="19.0" prefHeight="45.0" prefWidth="134.0" style="-fx-background-color: paleturquoise; -fx-font-size: 20; -fx-font-family: Courier New;" />
+            <TextField fx:id="ties" editable="false" focusTraversable="false" layoutX="26.0" layoutY="143.0" prefHeight="45.0" prefWidth="134.0" style="-fx-background-color: paleturquoise; -fx-font-size: 20; -fx-font-family: Courier New;" />
+            <TextField fx:id="score_x" editable="false" focusTraversable="false" layoutX="194.0" layoutY="19.0" prefHeight="45.0" prefWidth="62.0" style="-fx-background-color: paleturquoise; -fx-font-size: 20; -fx-font-family: Courier New;" />
+            <TextField fx:id="score_o" editable="false" focusTraversable="false" layoutX="194.0" layoutY="81.0" prefHeight="45.0" prefWidth="62.0" style="-fx-background-color: paleturquoise; -fx-font-size: 20; -fx-font-family: Courier New;" />
+            <TextField fx:id="score_ties" editable="false" focusTraversable="false" layoutX="194.0" layoutY="143.0" prefHeight="45.0" prefWidth="62.0" style="-fx-background-color: paleturquoise; -fx-font-size: 20; -fx-font-family: Courier New;" />
+         </children></Pane>
+   </right>
+   <center>
+      <GridPane gridLinesVisible="true" prefHeight="223.0" prefWidth="206.0" style="-fx-grid-lines-visible: true; -fx-background-color: paleturquoise;" BorderPane.alignment="CENTER">
+        <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Button fx:id="cell1" mnemonicParsing="false" onAction="#onActionCell" prefHeight="103.0" prefWidth="96.0" style="-fx-font-size: 42; -fx-background-color: paleturquoise; -fx-font-family: Courier New;">
+               <effect>
+                  <Glow />
+               </effect></Button>
+            <Button fx:id="cell2" mnemonicParsing="false" onAction="#onActionCell" prefHeight="99.0" prefWidth="99.0" style="-fx-font-size: 42; -fx-background-color: paleturquoise; -fx-font-family: Courier New;" GridPane.columnIndex="1">
+               <effect>
+                  <Glow />
+               </effect></Button>
+            <Button fx:id="cell3" mnemonicParsing="false" onAction="#onActionCell" prefHeight="138.0" prefWidth="114.0" style="-fx-font-size: 42; -fx-background-color: paleturquoise; -fx-font-family: Courier New;" GridPane.columnIndex="2">
+               <effect>
+                  <Glow />
+               </effect></Button>
+            <Button fx:id="cell4" mnemonicParsing="false" onAction="#onActionCell" prefHeight="117.0" prefWidth="120.0" style="-fx-font-size: 42; -fx-background-color: paleturquoise; -fx-font-family: Courier New;" GridPane.rowIndex="1">
+               <effect>
+                  <Glow />
+               </effect></Button>
+            <Button fx:id="cell5" mnemonicParsing="false" onAction="#onActionCell" prefHeight="123.0" prefWidth="126.0" style="-fx-font-size: 42; -fx-background-color: paleturquoise; -fx-font-family: Courier New;" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <effect>
+                  <Glow />
+               </effect></Button>
+            <Button fx:id="cell6" mnemonicParsing="false" onAction="#onActionCell" prefHeight="148.0" prefWidth="115.0" style="-fx-font-size: 42; -fx-background-color: paleturquoise; -fx-font-family: Courier New;" GridPane.columnIndex="2" GridPane.rowIndex="1">
+               <effect>
+                  <Glow />
+               </effect></Button>
+            <Button fx:id="cell7" mnemonicParsing="false" onAction="#onActionCell" prefHeight="127.0" prefWidth="125.0" style="-fx-font-size: 42; -fx-background-color: paleturquoise; -fx-font-family: Courier New;" GridPane.rowIndex="2">
+               <effect>
+                  <Glow />
+               </effect></Button>
+            <Button fx:id="cell8" mnemonicParsing="false" onAction="#onActionCell" prefHeight="123.0" prefWidth="131.0" style="-fx-font-size: 42; -fx-background-color: paleturquoise; -fx-font-family: Courier New;" GridPane.columnIndex="1" GridPane.rowIndex="2">
+               <effect>
+                  <Glow />
+               </effect></Button>
+            <Button fx:id="cell9" mnemonicParsing="false" onAction="#onActionCell" prefHeight="142.0" prefWidth="122.0" style="-fx-font-size: 42; -fx-background-color: paleturquoise; -fx-font-family: Courier New;" GridPane.columnIndex="2" GridPane.rowIndex="2">
+               <effect>
+                  <Glow />
+               </effect></Button>
+         </children>
+         <effect>
+            <Glow />
+         </effect>
+      </GridPane>
+   </center>
+   <top>
+      <Pane prefHeight="54.0" prefWidth="600.0" BorderPane.alignment="CENTER" />
+   </top>
+   <bottom>
+      <Pane prefHeight="87.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+         <children>
+            <ImageView fitHeight="68.0" fitWidth="72.0" layoutX="164.0" layoutY="10.0" onMousePressed="#restartOnAction" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@images/restart.png" />
+               </image>
+            </ImageView>
+            <Button focusTraversable="false" layoutX="425.0" layoutY="18.0" mnemonicParsing="false" onAction="#menuOnAction" prefHeight="51.0" prefWidth="125.0" style="-fx-background-color: mediumaquamarine; -fx-font-family: Courier New; -fx-font-size: 30;" text="Menu">
+               <effect>
+                  <Bloom />
+               </effect>
+            </Button>
+         </children></Pane>
+   </bottom>
+</BorderPane>
