@@ -1,0 +1,7 @@
+sudo: false 
+language: java 
+before_install: 
+- chmod +x FTP/gradlew 
+script: 
+- cd FTP 
+- ./gradlew build
