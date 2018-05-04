@@ -1,10 +1,9 @@
-package ru.spbau.erokhina.tictactoe;
+package ru.spbau.erokhina.findpair;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Slider;
 import javafx.stage.Stage;
 
 import java.io.IOException;

@@ -1,4 +1,4 @@
-package ru.spbau.erokhina.tictactoe;
+package ru.spbau.erokhina.findpair;
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -8,7 +8,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 

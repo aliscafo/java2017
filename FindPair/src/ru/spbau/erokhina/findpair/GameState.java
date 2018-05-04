@@ -1,8 +1,7 @@
-package ru.spbau.erokhina.tictactoe;
+package ru.spbau.erokhina.findpair;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.TreeSet;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
