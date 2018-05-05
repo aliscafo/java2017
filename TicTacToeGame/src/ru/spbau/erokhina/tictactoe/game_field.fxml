@@ -38,39 +38,39 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button fx:id="cell1" mnemonicParsing="false" onAction="#onActionCell" prefHeight="103.0" prefWidth="96.0" style="-fx-font-size: 42; -fx-background-color: paleturquoise; -fx-font-family: Courier New;">
+            <Button fx:id="cell0" mnemonicParsing="false" onAction="#onActionCell" prefHeight="103.0" prefWidth="96.0" style="-fx-font-size: 42; -fx-background-color: paleturquoise; -fx-font-family: Courier New;">
                <effect>
                   <Glow />
                </effect></Button>
-            <Button fx:id="cell2" mnemonicParsing="false" onAction="#onActionCell" prefHeight="99.0" prefWidth="99.0" style="-fx-font-size: 42; -fx-background-color: paleturquoise; -fx-font-family: Courier New;" GridPane.columnIndex="1">
+            <Button fx:id="cell1" mnemonicParsing="false" onAction="#onActionCell" prefHeight="99.0" prefWidth="99.0" style="-fx-font-size: 42; -fx-background-color: paleturquoise; -fx-font-family: Courier New;" GridPane.columnIndex="1">
                <effect>
                   <Glow />
                </effect></Button>
-            <Button fx:id="cell3" mnemonicParsing="false" onAction="#onActionCell" prefHeight="138.0" prefWidth="114.0" style="-fx-font-size: 42; -fx-background-color: paleturquoise; -fx-font-family: Courier New;" GridPane.columnIndex="2">
+            <Button fx:id="cell2" mnemonicParsing="false" onAction="#onActionCell" prefHeight="138.0" prefWidth="114.0" style="-fx-font-size: 42; -fx-background-color: paleturquoise; -fx-font-family: Courier New;" GridPane.columnIndex="2">
                <effect>
                   <Glow />
                </effect></Button>
-            <Button fx:id="cell4" mnemonicParsing="false" onAction="#onActionCell" prefHeight="117.0" prefWidth="120.0" style="-fx-font-size: 42; -fx-background-color: paleturquoise; -fx-font-family: Courier New;" GridPane.rowIndex="1">
+            <Button fx:id="cell3" mnemonicParsing="false" onAction="#onActionCell" prefHeight="117.0" prefWidth="120.0" style="-fx-font-size: 42; -fx-background-color: paleturquoise; -fx-font-family: Courier New;" GridPane.rowIndex="1">
                <effect>
                   <Glow />
                </effect></Button>
-            <Button fx:id="cell5" mnemonicParsing="false" onAction="#onActionCell" prefHeight="123.0" prefWidth="126.0" style="-fx-font-size: 42; -fx-background-color: paleturquoise; -fx-font-family: Courier New;" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <Button fx:id="cell4" mnemonicParsing="false" onAction="#onActionCell" prefHeight="123.0" prefWidth="126.0" style="-fx-font-size: 42; -fx-background-color: paleturquoise; -fx-font-family: Courier New;" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <effect>
                   <Glow />
                </effect></Button>
-            <Button fx:id="cell6" mnemonicParsing="false" onAction="#onActionCell" prefHeight="148.0" prefWidth="115.0" style="-fx-font-size: 42; -fx-background-color: paleturquoise; -fx-font-family: Courier New;" GridPane.columnIndex="2" GridPane.rowIndex="1">
+            <Button fx:id="cell5" mnemonicParsing="false" onAction="#onActionCell" prefHeight="148.0" prefWidth="115.0" style="-fx-font-size: 42; -fx-background-color: paleturquoise; -fx-font-family: Courier New;" GridPane.columnIndex="2" GridPane.rowIndex="1">
                <effect>
                   <Glow />
                </effect></Button>
-            <Button fx:id="cell7" mnemonicParsing="false" onAction="#onActionCell" prefHeight="127.0" prefWidth="125.0" style="-fx-font-size: 42; -fx-background-color: paleturquoise; -fx-font-family: Courier New;" GridPane.rowIndex="2">
+            <Button fx:id="cell6" mnemonicParsing="false" onAction="#onActionCell" prefHeight="127.0" prefWidth="125.0" style="-fx-font-size: 42; -fx-background-color: paleturquoise; -fx-font-family: Courier New;" GridPane.rowIndex="2">
                <effect>
                   <Glow />
                </effect></Button>
-            <Button fx:id="cell8" mnemonicParsing="false" onAction="#onActionCell" prefHeight="123.0" prefWidth="131.0" style="-fx-font-size: 42; -fx-background-color: paleturquoise; -fx-font-family: Courier New;" GridPane.columnIndex="1" GridPane.rowIndex="2">
+            <Button fx:id="cell7" mnemonicParsing="false" onAction="#onActionCell" prefHeight="123.0" prefWidth="131.0" style="-fx-font-size: 42; -fx-background-color: paleturquoise; -fx-font-family: Courier New;" GridPane.columnIndex="1" GridPane.rowIndex="2">
                <effect>
                   <Glow />
                </effect></Button>
-            <Button fx:id="cell9" mnemonicParsing="false" onAction="#onActionCell" prefHeight="142.0" prefWidth="122.0" style="-fx-font-size: 42; -fx-background-color: paleturquoise; -fx-font-family: Courier New;" GridPane.columnIndex="2" GridPane.rowIndex="2">
+            <Button fx:id="cell8" mnemonicParsing="false" onAction="#onActionCell" prefHeight="142.0" prefWidth="122.0" style="-fx-font-size: 42; -fx-background-color: paleturquoise; -fx-font-family: Courier New;" GridPane.columnIndex="2" GridPane.rowIndex="2">
                <effect>
                   <Glow />
                </effect></Button>
@@ -91,7 +91,7 @@
                   <Image url="@images/restart.png" />
                </image>
             </ImageView>
-            <Button focusTraversable="false" layoutX="425.0" layoutY="18.0" mnemonicParsing="false" onAction="#menuOnAction" prefHeight="51.0" prefWidth="125.0" style="-fx-background-color: mediumaquamarine; -fx-font-family: Courier New; -fx-font-size: 30;" text="Menu">
+            <Button focusTraversable="false" layoutX="425.0" layoutY="18.0" mnemonicParsing="false" onAction="#menuButtonOnAction" prefHeight="51.0" prefWidth="125.0" style="-fx-background-color: mediumaquamarine; -fx-font-family: Courier New; -fx-font-size: 30;" text="Menu">
                <effect>
                   <Bloom />
                </effect>

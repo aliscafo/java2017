@@ -12,23 +12,34 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.*;
-
-import static ru.spbau.erokhina.tictactoe.Utils.checkWin;
-import static ru.spbau.erokhina.tictactoe.Utils.makeMoveEasyBot;
-import static ru.spbau.erokhina.tictactoe.Utils.makeMoveSmartBot;
 
 /**
  * Class that provides methods which are responsible for UI Controls behavior.
  */
 public class Controller {
+    private GameField gameField = new GameField();
+
     /**
      * OnAction method for Start Button.
-     * @param actionEvent given action
+     * @param actionEvent given event
      */
     public void startButtonOnAction(ActionEvent actionEvent) throws IOException {
+        newScene(actionEvent, "choose_mode.fxml");
+    }
+
+    /**
+     * OnAction method for Menu Button.
+     * @param actionEvent given event
+     */
+    public void menuButtonOnAction(ActionEvent actionEvent) throws IOException {
+        newScene(actionEvent, "menu.fxml");
+    }
+
+    private void newScene(ActionEvent actionEvent, String resource) throws IOException {
         Stage stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
-        Parent panel = FXMLLoader.load(getClass().getResource("choose_mode.fxml"));
+        Parent panel = FXMLLoader.load(getClass().getResource(resource));
+
+        GameState.instance.resetScore();
 
         Scene scene = new Scene(panel, 600, 400);
         stage.setScene(scene);
@@ -41,18 +52,12 @@ public class Controller {
         Platform.exit();
     }
 
-    /**
-     * OnAction method for Menu Button.
-     * @param actionEvent given action
-     */
-    public void menuOnAction(ActionEvent actionEvent) throws IOException {
-        Stage stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
-        Parent panel = FXMLLoader.load(getClass().getResource("menu.fxml"));
-
-        GameState.resetScore();
-
-        Scene scene = new Scene(panel, 600, 400);
-        stage.setScene(scene);
+    private void setCommonGameOptions(String player1, String player2, GameState.PlayMode playMode) {
+        GameState.instance.setFirstPlayer(player1);
+        GameState.instance.setSecondPlayer(player2);
+        GameState.instance.setGameState(GameState.CurGameState.PLAY);
+        GameState.instance.setPlayMode(playMode);
+        GameState.instance.setWhoseTurn("x");
     }
 
     /**
@@ -60,12 +65,7 @@ public class Controller {
      * @param actionEvent given action
      */
     public void hotSeatOnAction(ActionEvent actionEvent) throws IOException {
-        GameState.setFirstPlayer("Player 1");
-        GameState.setSecondPlayer("Player 2");
-        GameState.setGameState("play");
-        GameState.setPlayMode("hot_seat");
-        GameState.setWhoseTurn("x");
-
+        setCommonGameOptions("Player 1", "Player 2", GameState.PlayMode.HOT_SEAT);
         setStartField(actionEvent);
     }
 
@@ -74,12 +74,7 @@ public class Controller {
      * @param actionEvent given action
      */
     public void easyBotOnAction(ActionEvent actionEvent) throws IOException {
-        GameState.setFirstPlayer("You");
-        GameState.setSecondPlayer("Bot");
-        GameState.setGameState("play");
-        GameState.setPlayMode("easy_bot");
-        GameState.setWhoseTurn("x");
-
+        setCommonGameOptions("You", "Bot", GameState.PlayMode.EASY_BOT);
         setStartField(actionEvent);
     }
 
@@ -88,12 +83,7 @@ public class Controller {
      * @param actionEvent given action
      */
     public void smartBotOnAction(ActionEvent actionEvent) throws IOException {
-        GameState.setFirstPlayer("You");
-        GameState.setSecondPlayer("Bot");
-        GameState.setGameState("play");
-        GameState.setPlayMode("smart_bot");
-        GameState.setWhoseTurn("x");
-
+        setCommonGameOptions("You", "Bot", GameState.PlayMode.SMART_BOT);
         setStartField(actionEvent);
     }
 
@@ -101,64 +91,70 @@ public class Controller {
      * OnAction method for cell Button.
      * @param actionEvent given action
      */
-    public void onActionCell(ActionEvent actionEvent) throws InterruptedException {
-        if (GameState.getGameState().equals("round_ends")) {
+    public void onActionCell(ActionEvent actionEvent) throws Exception {
+        if (GameState.instance.getGameState().equals(GameState.CurGameState.ROUND_ENDS)) {
             return;
         }
 
         Stage stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
 
         String cellId = ((Button) actionEvent.getSource()).getId();
+        Integer cellIdInt = Integer.parseInt(Character.toString(cellId.charAt(cellId.length() - 1)));
+
         Button button = (Button) stage.getScene().lookup("#" + cellId);
 
         if (button.getText().equals("")) {
-            button.setText(GameState.getWhoseTurn());
-            GameState.nextTurn();
+            button.setText(GameState.instance.getWhoseTurn());
+            gameField.setAt(cellIdInt, GameState.instance.getWhoseTurn().charAt(0));
+            GameState.instance.nextTurn();
 
-            if (!GameState.getPlayMode().equals("hot_seat")) {
-                if (checkWin(getArrayFromStage(stage)).equals("")) {
-                    Integer nextCell = null;
+            if (!GameState.instance.getPlayMode().equals(GameState.PlayMode.HOT_SEAT)) {
+                if (gameField.checkWin().equals("")) {
+                    Integer nextCell;
 
-                    switch (GameState.getPlayMode()) {
-                        case "easy_bot":
-                            nextCell = makeMoveEasyBot(getArrayFromStage(stage));
+                    switch (GameState.instance.getPlayMode()) {
+                        case EASY_BOT:
+                            nextCell = gameField.makeMoveEasyBot();
                             break;
-                        case "smart_bot":
-                            nextCell = makeMoveSmartBot(getArrayFromStage(stage));
+                        case SMART_BOT:
+                            nextCell = gameField.makeMoveSmartBot();
                             break;
+                        default:
+                            throw new Exception("Unknown play mode.");
                     }
 
                     Button buttonBot = (Button) stage.getScene().lookup("#cell" + nextCell);
-                    String turn = GameState.getWhoseTurn();
+                    String turn = GameState.instance.getWhoseTurn();
                     buttonBot.setText(turn);
+                    gameField.setAt(nextCell, turn.charAt(0));
 
-                    GameState.nextTurn();
+                    GameState.instance.nextTurn();
                 }
             }
 
         }
 
-        String curResult = checkWin(getArrayFromStage(stage));
+        String curResult = gameField.checkWin();
 
         if (curResult.equals("")) {
             return;
         }
 
         TextField textField = (TextField) stage.getScene().lookup("#game_result");
-        GameState.setGameState("round_ends");
+        GameState.instance.setGameState(GameState.CurGameState.ROUND_ENDS);
 
         switch (curResult) {
             case "x":
-                textField.setText(GameState.getFirstPlayer() + " win!");
-                GameState.incScoreFirst();
+                textField.setText(GameState.instance.getFirstPlayer() + " win!");
+                GameState.instance.incScoreFirst();
                 break;
             case "o":
-                textField.setText(GameState.getSecondPlayer() + " win!");
-                GameState.incScoreSecond();
+                textField.setText(GameState.instance.getSecondPlayer() + " win!");
+                GameState.instance.incScoreSecond();
                 break;
             case "tie":
                 textField.setText("Tie!");
-                GameState.incScoreTies();
+                GameState.instance.incScoreTies();
                 break;
         }
 
@@ -169,23 +165,25 @@ public class Controller {
      * @param mouseEvent given mouseEvent
      */
     public void restartOnAction(MouseEvent mouseEvent) throws IOException {
-        GameState.setGameState("play");
+        GameState.instance.setGameState(GameState.CurGameState.PLAY);
 
-        switch (GameState.getPlayMode()) {
-            case "hot_seat":
+        switch (GameState.instance.getPlayMode()) {
+            case HOT_SEAT:
                 hotSeatOnAction(new ActionEvent(mouseEvent.getSource(), mouseEvent.getTarget()));
                 break;
-            case "easy_bot":
+            case EASY_BOT:
                 easyBotOnAction(new ActionEvent(mouseEvent.getSource(), mouseEvent.getTarget()));
                 break;
-            case "smart_bot":
+            case SMART_BOT:
                 smartBotOnAction(new ActionEvent(mouseEvent.getSource(), mouseEvent.getTarget()));
                 break;
         }
     }
 
     private void clearField(Scene scene) {
-        for (int i = 1; i <= 9; i++) {
+        gameField.clear();
+
+        for (int i = 0; i <= 8; i++) {
             ((Button)scene.lookup("#cell" + i)).setText("");
         }
     }
@@ -196,34 +194,24 @@ public class Controller {
         Scene scene = new Scene(panel, 600, 400);
 
         TextField playerX = (TextField) scene.lookup("#player_x");
-        playerX.setText(GameState.getFirstPlayer());
+        playerX.setText(GameState.instance.getFirstPlayer());
 
         TextField playerO = (TextField) scene.lookup("#player_o");
-        playerO.setText(GameState.getSecondPlayer());
+        playerO.setText(GameState.instance.getSecondPlayer());
 
         TextField ties = (TextField) scene.lookup("#ties");
         ties.setText("Ties");
 
         TextField scoreX = (TextField) scene.lookup("#score_x");
-        scoreX.setText(GameState.getScoreFirst().toString());
+        scoreX.setText(GameState.instance.getScoreFirst().toString());
 
         TextField scoreO = (TextField) scene.lookup("#score_o");
-        scoreO.setText(GameState.getScoreSecond().toString());
+        scoreO.setText(GameState.instance.getScoreSecond().toString());
 
         TextField scoreTies = (TextField) scene.lookup("#score_ties");
-        scoreTies.setText(GameState.getScoreTies().toString());
+        scoreTies.setText(GameState.instance.getScoreTies().toString());
 
         clearField(scene);
         stage.setScene(scene);
-    }
-
-    private ArrayList<String> getArrayFromStage(Stage stage) {
-        ArrayList<String> values = new ArrayList<>();
-
-        for (int i = 1; i <= 9; i++) {
-            values.add(((Button) stage.getScene().lookup("#cell" + i)).getText());
-        }
-
-        return values;
     }
 }

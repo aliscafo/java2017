@@ -4,21 +4,33 @@ package ru.spbau.erokhina.tictactoe;
  * Class that stores game states and statistics.
  */
 class GameState {
-    private static String[] turns = {"x", "o"};
-    private static String GAME_STATE = "menu";
-    private static String PLAY_MODE = "";
-    private static int WHOSE_TURN = 0;
-    private static String firstPlayer;
-    private static String secondPlayer;
-    private static Integer scoreFirst = 0;
-    private static Integer scoreSecond = 0;
-    private static Integer scoreTies = 0;
+    static final GameState instance = new GameState();
+    
+    private Character[] turns = {'x', 'o'};
+    private CurGameState GAME_STATE = CurGameState.MENU;
+    private PlayMode PLAY_MODE = PlayMode.EMPTY;
+    private int WHOSE_TURN = 0;
+    private String firstPlayer;
+    private String secondPlayer;
+    private Integer scoreFirst = 0;
+    private Integer scoreSecond = 0;
+    private Integer scoreTies = 0;
+
+    /**
+     * Represents current state of game.
+     */
+    enum CurGameState {MENU, PLAY, ROUND_ENDS}
+
+    /**
+     * Represents current play mode.
+     */
+    enum PlayMode {EMPTY, HOT_SEAT, EASY_BOT, SMART_BOT}
 
     /**
      * Sets the state of the game: "play" or "round_ends".
      * @param newState new state ("play" or "round_ends").
      */
-    static void setGameState(String newState) {
+    void setGameState(CurGameState newState) {
         GAME_STATE = newState;
     }
 
@@ -26,7 +38,7 @@ class GameState {
      * Gets the state of the game: "play" or "round_ends".
      * @return the state of the game: "play" or "round_ends".
      */
-    static String getGameState() {
+    CurGameState getGameState() {
         return GAME_STATE;
     }
 
@@ -34,7 +46,7 @@ class GameState {
      * Sets the mode of the game: "hot_seat", "easy_bot" or "smart_bot".
      * @param newMode new mode ("hot_seat", "easy_bot" or "smart_bot")
      */
-    static void setPlayMode(String newMode) {
+    void setPlayMode(PlayMode newMode) {
         PLAY_MODE = newMode;
     }
 
@@ -42,14 +54,14 @@ class GameState {
      * Gets the mode of the game: "hot_seat", "easy_bot" or "smart_bot".
      * @return the mode of the game: "hot_seat", "easy_bot" or "smart_bot".
      */
-    static String getPlayMode() {
+    PlayMode getPlayMode() {
         return PLAY_MODE;
     }
 
     /**
      * Changes next turn.
      */
-    static void nextTurn() {
+    void nextTurn() {
         WHOSE_TURN = 1 - WHOSE_TURN;
     }
 
@@ -57,15 +69,15 @@ class GameState {
      * Gets next turn.
      * @return next turn ("x" or "o")
      */
-    static String getWhoseTurn() {
-        return turns[WHOSE_TURN];
+    String getWhoseTurn() {
+        return turns[WHOSE_TURN].toString();
     }
 
     /**
      * Sets the turn.
      * @param turn new next turn ("x" or "o")
      */
-    static void setWhoseTurn(String turn) {
+    void setWhoseTurn(String turn) {
         if (turn.equals("x")) {
             WHOSE_TURN = 0;
         } else {
@@ -77,7 +89,7 @@ class GameState {
      * Sets the name of the first player.
      * @param first the name of the first player
      */
-    static void setFirstPlayer(String first) {
+    void setFirstPlayer(String first) {
         firstPlayer = first;
     }
 
@@ -85,7 +97,7 @@ class GameState {
      * Gets the name of the first player.
      * @return the name of the first player
      */
-    static String getFirstPlayer() {
+    String getFirstPlayer() {
         return firstPlayer;
     }
 
@@ -93,7 +105,7 @@ class GameState {
      * Sets the name of the second player.
      * @param second the name of the second player
      */
-    static void setSecondPlayer(String second) {
+    void setSecondPlayer(String second) {
         secondPlayer = second;
     }
 
@@ -101,14 +113,14 @@ class GameState {
      * Gets the name of the second player.
      * @return the name of the second player
      */
-    static String getSecondPlayer() {
+    String getSecondPlayer() {
         return secondPlayer;
     }
 
     /**
      * Increments the score of the first player.
      */
-    static void incScoreFirst() {
+    void incScoreFirst() {
         scoreFirst++;
     }
 
@@ -116,14 +128,14 @@ class GameState {
      * Returns the score of the first player.
      * @return the score of the first player
      */
-    static Integer getScoreFirst() {
+    Integer getScoreFirst() {
         return scoreFirst;
     }
 
     /**
      * Increments the score of the second player.
      */
-    static void incScoreSecond() {
+    void incScoreSecond() {
         scoreSecond++;
     }
 
@@ -131,14 +143,14 @@ class GameState {
      * Returns the score of the second player.
      * @return the score of the second player
      */
-    static Integer getScoreSecond() {
+    Integer getScoreSecond() {
         return scoreSecond;
     }
 
     /**
      * Increments the number of ties.
      */
-    static void incScoreTies() {
+    void incScoreTies() {
         scoreTies++;
     }
 
@@ -146,17 +158,20 @@ class GameState {
      * Returns the number of ties.
      * @return the number of ties
      */
-    static Integer getScoreTies() {
+    Integer getScoreTies() {
         return scoreTies;
     }
 
     /**
      * Resets all scores.
      */
-    static void resetScore() {
+    void resetScore() {
         scoreFirst = 0;
         scoreSecond = 0;
         scoreTies = 0;
+        GAME_STATE = CurGameState.MENU;
+        PLAY_MODE = PlayMode.EMPTY;
+        WHOSE_TURN = 0;
     }
 
 }
