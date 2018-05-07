@@ -1,5 +1,5 @@
-# ignore .idea/workspace 
-*/.idea/workspace.xml
+# ignore .idea
+*/.idea/
 
 # ignore gradle
 */.gradle/
