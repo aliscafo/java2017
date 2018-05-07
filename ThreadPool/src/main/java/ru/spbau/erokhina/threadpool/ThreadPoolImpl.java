@@ -12,7 +12,7 @@ import java.util.function.Supplier;
 @SuppressWarnings("unchecked")
 public class ThreadPoolImpl implements ThreadPool {
     private final Queue<AbstractTask> tasks = new LinkedList<>();
-    private ArrayList<Thread> threads = new ArrayList<>();
+    private final ArrayList<Thread> threads = new ArrayList<>();
 
     /**
      * Constructor for creating ThreadPoolImpl.
@@ -29,94 +29,64 @@ public class ThreadPoolImpl implements ThreadPool {
     /**
      * All threads will be stopped.
      */
-    @Override
     public void shutdown() {
-        for (Thread thread : threads) {
-            thread.interrupt();
+        synchronized (tasks) {
+            for (AbstractTask task : tasks) {
+                task.stop();
+                synchronized (task) {
+                    task.notifyAll();
+                }
+            }
+            tasks.clear();
+        }
+
+        synchronized (threads) {
+            for (Thread thread : threads) {
+                while (thread.getState() != Thread.State.TERMINATED && thread.getState() != Thread.State.NEW) {
+                    thread.interrupt();
+                }
+                try {
+                    thread.join();
+                } catch (InterruptedException ignored) {
+                }
+            }
+
+            threads.clear();
         }
     }
 
-     private interface AbstractTask extends LightFuture {
+    private interface AbstractTask<T> extends LightFuture {
         void run();
         boolean hasException();
         Exception getException();
-     }
+        void stop();
+    }
 
-    private class Task<T> implements AbstractTask {
+    enum TaskType {WITHOUT_PARENT, HAS_PARENT}
+
+    private class Task<T> implements AbstractTask<T> {
         private volatile boolean isReady;
         private volatile T result;
         private volatile LightExecutionException exception;
         private Supplier<T> supplier;
+        private Function function;
+        private AbstractTask parent;
+        private TaskType taskType;
 
         Task(Supplier<T> supplierTask) {
             supplier = supplierTask;
+            taskType = TaskType.WITHOUT_PARENT;
         }
 
-        @Override
-        public boolean hasException() {
-            return (exception != null);
-        }
-
-        @Override
-        public Exception getException() {
-            return exception;
-        }
-
-        @Override
-        public boolean isReady() {
-            return isReady;
-        }
-
-        @Override
-        public Object get() throws LightExecutionException {
-            while (!isReady) {
-                synchronized (this) {
-                    try {
-                        wait();
-                    } catch (InterruptedException ignored) {
-                    }
-                }
-            }
-
-            if (exception != null) {
-                throw exception;
-            }
-
-            return result;
-        }
-
-        @Override
-        public LightFuture thenApply(Function function) {
-            AbstractTask newTask = new HasParent(this, function);
-            synchronized (tasks) {
-                tasks.add(newTask);
-                tasks.notifyAll();
-            }
-            return newTask;
-        }
-
-        public void run() {
-            try {
-                result = supplier.get();
-            }
-            catch (Exception e) {
-                exception = new LightExecutionException(e);
-            } finally {
-                isReady = true;
-            }
-        }
-    }
-
-    private class HasParent<U> implements AbstractTask {
-        private volatile boolean isReady;
-        private volatile U result;
-        private volatile LightExecutionException exception;
-        private Function function;
-        private AbstractTask parent;
-
-        HasParent(AbstractTask parent, Function function) {
+        Task(AbstractTask parent, Function function) {
             this.parent = parent;
             this.function = function;
+            taskType = TaskType.HAS_PARENT;
+        }
+
+        @Override
+        public void stop() {
+            exception = new LightExecutionException();
         }
 
         @Override
@@ -154,7 +124,7 @@ public class ThreadPoolImpl implements ThreadPool {
 
         @Override
         public LightFuture thenApply(Function function) {
-            AbstractTask newTask = new HasParent(this, function);
+            AbstractTask newTask = new Task(this, function);
             synchronized (tasks) {
                 tasks.add(newTask);
                 tasks.notifyAll();
@@ -163,23 +133,32 @@ public class ThreadPoolImpl implements ThreadPool {
         }
 
         public void run() {
-            try {
-                while (!parent.isReady()) {
-                    synchronized (parent) {
-                        parent.wait();
+            if (taskType.equals(TaskType.WITHOUT_PARENT)) {
+                try {
+                    result = supplier.get();
+                } catch (Exception e) {
+                    exception = new LightExecutionException(e);
+                } finally {
+                    isReady = true;
+                }
+            } else {
+                try {
+                    while (!parent.isReady()) {
+                        synchronized (parent) {
+                            parent.wait();
+                        }
+                    }
+                    result = (T) function.apply(parent.get());
+                    if (parent.hasException()) {
+                        throw parent.getException();
                     }
                 }
-                result = (U) function.apply(parent.get());
-                if (parent.hasException()) {
-                    throw parent.getException();
+                catch (Exception e) {
+                    exception = new LightExecutionException(e);
+                } finally {
+                    isReady = true;
                 }
             }
-            catch (Exception e) {
-                exception = new LightExecutionException(e);
-            } finally {
-                isReady = true;
-            }
-
         }
     }
 
@@ -215,9 +194,6 @@ public class ThreadPoolImpl implements ThreadPool {
                     synchronized (task) {
                         task.run();
                         task.notifyAll();
-                    }
-                    synchronized (tasks) {
-                        tasks.notifyAll();
                     }
 
                 }
