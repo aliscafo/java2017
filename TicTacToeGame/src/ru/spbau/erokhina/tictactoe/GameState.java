@@ -4,7 +4,7 @@ package ru.spbau.erokhina.tictactoe;
  * Class that stores game states and statistics.
  */
 class GameState {
-    static final GameState instance = new GameState();
+    private static final GameState instance = new GameState();
     
     private Character[] turns = {'x', 'o'};
     private CurGameState GAME_STATE = CurGameState.MENU;
@@ -15,6 +15,17 @@ class GameState {
     private Integer scoreFirst = 0;
     private Integer scoreSecond = 0;
     private Integer scoreTies = 0;
+
+    private GameState() {
+    }
+
+    /**
+     * Returns singleton instance of GameState.
+     * @return singleton instance of GameState
+     */
+    public static GameState getInstance() {
+        return instance;
+    }
 
     /**
      * Represents current state of game.

@@ -39,7 +39,7 @@ public class Controller {
         Stage stage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
         Parent panel = FXMLLoader.load(getClass().getResource(resource));
 
-        GameState.instance.resetScore();
+        GameState.getInstance().resetScore();
 
         Scene scene = new Scene(panel, 600, 400);
         stage.setScene(scene);
@@ -53,11 +53,11 @@ public class Controller {
     }
 
     private void setCommonGameOptions(String player1, String player2, GameState.PlayMode playMode) {
-        GameState.instance.setFirstPlayer(player1);
-        GameState.instance.setSecondPlayer(player2);
-        GameState.instance.setGameState(GameState.CurGameState.PLAY);
-        GameState.instance.setPlayMode(playMode);
-        GameState.instance.setWhoseTurn("x");
+        GameState.getInstance().setFirstPlayer(player1);
+        GameState.getInstance().setSecondPlayer(player2);
+        GameState.getInstance().setGameState(GameState.CurGameState.PLAY);
+        GameState.getInstance().setPlayMode(playMode);
+        GameState.getInstance().setWhoseTurn("x");
     }
 
     /**
@@ -92,7 +92,7 @@ public class Controller {
      * @param actionEvent given action
      */
     public void onActionCell(ActionEvent actionEvent) throws Exception {
-        if (GameState.instance.getGameState().equals(GameState.CurGameState.ROUND_ENDS)) {
+        if (GameState.getInstance().getGameState().equals(GameState.CurGameState.ROUND_ENDS)) {
             return;
         }
 
@@ -104,15 +104,15 @@ public class Controller {
         Button button = (Button) stage.getScene().lookup("#" + cellId);
 
         if (button.getText().equals("")) {
-            button.setText(GameState.instance.getWhoseTurn());
-            gameField.setAt(cellIdInt, GameState.instance.getWhoseTurn().charAt(0));
-            GameState.instance.nextTurn();
+            button.setText(GameState.getInstance().getWhoseTurn());
+            gameField.setAt(cellIdInt, GameState.getInstance().getWhoseTurn().charAt(0));
+            GameState.getInstance().nextTurn();
 
-            if (!GameState.instance.getPlayMode().equals(GameState.PlayMode.HOT_SEAT)) {
+            if (!GameState.getInstance().getPlayMode().equals(GameState.PlayMode.HOT_SEAT)) {
                 if (gameField.checkWin().equals("")) {
                     Integer nextCell;
 
-                    switch (GameState.instance.getPlayMode()) {
+                    switch (GameState.getInstance().getPlayMode()) {
                         case EASY_BOT:
                             nextCell = gameField.makeMoveEasyBot();
                             break;
@@ -124,11 +124,11 @@ public class Controller {
                     }
 
                     Button buttonBot = (Button) stage.getScene().lookup("#cell" + nextCell);
-                    String turn = GameState.instance.getWhoseTurn();
+                    String turn = GameState.getInstance().getWhoseTurn();
                     buttonBot.setText(turn);
                     gameField.setAt(nextCell, turn.charAt(0));
 
-                    GameState.instance.nextTurn();
+                    GameState.getInstance().nextTurn();
                 }
             }
 
@@ -141,20 +141,20 @@ public class Controller {
         }
 
         TextField textField = (TextField) stage.getScene().lookup("#game_result");
-        GameState.instance.setGameState(GameState.CurGameState.ROUND_ENDS);
+        GameState.getInstance().setGameState(GameState.CurGameState.ROUND_ENDS);
 
         switch (curResult) {
             case "x":
-                textField.setText(GameState.instance.getFirstPlayer() + " win!");
-                GameState.instance.incScoreFirst();
+                textField.setText(GameState.getInstance().getFirstPlayer() + " win!");
+                GameState.getInstance().incScoreFirst();
                 break;
             case "o":
-                textField.setText(GameState.instance.getSecondPlayer() + " win!");
-                GameState.instance.incScoreSecond();
+                textField.setText(GameState.getInstance().getSecondPlayer() + " win!");
+                GameState.getInstance().incScoreSecond();
                 break;
             case "tie":
                 textField.setText("Tie!");
-                GameState.instance.incScoreTies();
+                GameState.getInstance().incScoreTies();
                 break;
         }
 
@@ -165,9 +165,9 @@ public class Controller {
      * @param mouseEvent given mouseEvent
      */
     public void restartOnAction(MouseEvent mouseEvent) throws IOException {
-        GameState.instance.setGameState(GameState.CurGameState.PLAY);
+        GameState.getInstance().setGameState(GameState.CurGameState.PLAY);
 
-        switch (GameState.instance.getPlayMode()) {
+        switch (GameState.getInstance().getPlayMode()) {
             case HOT_SEAT:
                 hotSeatOnAction(new ActionEvent(mouseEvent.getSource(), mouseEvent.getTarget()));
                 break;
@@ -194,22 +194,22 @@ public class Controller {
         Scene scene = new Scene(panel, 600, 400);
 
         TextField playerX = (TextField) scene.lookup("#player_x");
-        playerX.setText(GameState.instance.getFirstPlayer());
+        playerX.setText(GameState.getInstance().getFirstPlayer());
 
         TextField playerO = (TextField) scene.lookup("#player_o");
-        playerO.setText(GameState.instance.getSecondPlayer());
+        playerO.setText(GameState.getInstance().getSecondPlayer());
 
         TextField ties = (TextField) scene.lookup("#ties");
         ties.setText("Ties");
 
         TextField scoreX = (TextField) scene.lookup("#score_x");
-        scoreX.setText(GameState.instance.getScoreFirst().toString());
+        scoreX.setText(GameState.getInstance().getScoreFirst().toString());
 
         TextField scoreO = (TextField) scene.lookup("#score_o");
-        scoreO.setText(GameState.instance.getScoreSecond().toString());
+        scoreO.setText(GameState.getInstance().getScoreSecond().toString());
 
         TextField scoreTies = (TextField) scene.lookup("#score_ties");
-        scoreTies.setText(GameState.instance.getScoreTies().toString());
+        scoreTies.setText(GameState.getInstance().getScoreTies().toString());
 
         clearField(scene);
         stage.setScene(scene);
