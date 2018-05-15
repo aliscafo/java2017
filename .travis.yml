@@ -1,0 +1,7 @@
++sudo: false 
++language: java 
++before_install: 
++- chmod +x TicTacToeGame/gradlew 
++script: 
++- cd TicTacToeGame
++- ./gradlew build
