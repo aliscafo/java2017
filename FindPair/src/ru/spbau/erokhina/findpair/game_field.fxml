@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.effect.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: paleturquoise;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.spbau.erokhina.findpair.Controller">
+   <left>
+      <Pane prefHeight="252.0" prefWidth="74.0" BorderPane.alignment="CENTER" />
+   </left>
+   <right>
+      <Pane prefHeight="252.0" prefWidth="273.0" BorderPane.alignment="CENTER">
+         <children>
+            <TextField fx:id="game_result" alignment="TOP_CENTER" editable="false" focusTraversable="false" layoutX="1.0" layoutY="77.0" prefHeight="54.0" prefWidth="271.0" style="-fx-background-color: paleturquoise; -fx-font-size: 20; -fx-font-family: Courier New;" />
+            <TextField fx:id="player_x" editable="false" focusTraversable="false" layoutX="26.0" layoutY="19.0" prefHeight="45.0" prefWidth="134.0" style="-fx-background-color: paleturquoise; -fx-font-size: 20; -fx-font-family: Courier New;" />
+         </children></Pane>
+   </right>
+   <top>
+      <Pane prefHeight="54.0" prefWidth="600.0" BorderPane.alignment="CENTER" />
+   </top>
+   <bottom>
+      <Pane prefHeight="87.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+         <children>
+            <Button focusTraversable="false" layoutX="425.0" layoutY="18.0" mnemonicParsing="false" onAction="#menuOnAction" prefHeight="51.0" prefWidth="125.0" style="-fx-background-color: mediumaquamarine; -fx-font-family: Courier New; -fx-font-size: 30;" text="Menu">
+               <effect>
+                  <Bloom />
+               </effect>
+            </Button>
+         </children></Pane>
+   </bottom>
+   <center>
+      <VBox fx:id="field" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER" />
+   </center>
+</BorderPane>

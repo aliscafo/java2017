@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: paleturquoise;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.spbau.erokhina.findpair.Controller">
+    <top>
+        <TextField alignment="TOP_CENTER" editable="false" focusTraversable="false" prefHeight="72.0" prefWidth="600.0" style="-fx-background-color: mediumaquamarine; -fx-font-family: Courier New; -fx-font-size: 48;" text="FindPair Game" BorderPane.alignment="CENTER">
+            <font>
+                <Font name="System Bold" size="48.0" />
+            </font>
+            <effect>
+                <Bloom />
+            </effect>
+        </TextField>
+    </top>
+    <center>
+        <VBox alignment="CENTER" prefHeight="269.0" prefWidth="296.0">
+            <children>
+            <Button focusTraversable="false" minWidth="-Infinity" mnemonicParsing="false" onAction="#startButtonOnAction" prefHeight="76.0" prefWidth="251.0" style="-fx-background-color: mediumaquamarine; -fx-font-size: 35; -fx-font-family: Courier New;" text="Start">
+               <effect>
+                  <Bloom />
+               </effect>
+            </Button>
+            <Pane prefHeight="32.0" prefWidth="296.0" />
+            <Button focusTraversable="false" minWidth="-Infinity" mnemonicParsing="false" onAction="#exitButtonOnAction" prefHeight="76.0" prefWidth="251.0" style="-fx-background-color: mediumaquamarine; -fx-font-size: 35; -fx-font-family: Courier New;" text="Exit">
+               <effect>
+                  <Bloom />
+               </effect>
+            </Button>
+            </children>
+        </VBox>
+    </center>
+    <left>
+        <Pane prefHeight="270.0" prefWidth="159.0" BorderPane.alignment="CENTER" />
+    </left>
+    <right>
+        <Pane prefHeight="270.0" prefWidth="145.0" BorderPane.alignment="CENTER" />
+    </right>
+    <bottom>
+        <Pane prefHeight="28.0" prefWidth="600.0" BorderPane.alignment="CENTER" />
+    </bottom>
+</BorderPane>
