@@ -58,11 +58,11 @@ public class TestRunnerTests {
         assertTrue(BeforeAfterTestingClass.list.size() == 6);
 
         assertTrue(BeforeAfterTestingClass.list.get(0).equals("before"));
-        assertEquals("test1", BeforeAfterTestingClass.list.get(1));
+        assertTrue(BeforeAfterTestingClass.list.get(1).startsWith("test"));
         assertTrue(BeforeAfterTestingClass.list.get(2).equals("after"));
 
         assertTrue(BeforeAfterTestingClass.list.get(3).equals("before"));
-        assertEquals("test2", BeforeAfterTestingClass.list.get(4));
+        assertTrue(BeforeAfterTestingClass.list.get(4).startsWith("test"));
         assertTrue(BeforeAfterTestingClass.list.get(5).equals("after"));
     }
 
@@ -74,8 +74,8 @@ public class TestRunnerTests {
         assertTrue(BeforeAfterClassTestingClass.list.size() == 4);
 
         assertTrue(BeforeAfterClassTestingClass.list.get(0).equals("before"));
-        assertEquals("test1", BeforeAfterClassTestingClass.list.get(1));
-        assertEquals("test2", BeforeAfterClassTestingClass.list.get(2));
+        assertTrue(BeforeAfterClassTestingClass.list.get(1).startsWith("test"));
+        assertTrue(BeforeAfterClassTestingClass.list.get(2).startsWith("test"));
         assertTrue(BeforeAfterClassTestingClass.list.get(3).equals("after"));
     }
 }
