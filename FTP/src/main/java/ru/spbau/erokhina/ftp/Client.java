@@ -4,7 +4,9 @@ import java.net.InetAddress;
 
 import java.net.*;
 import java.io.*;
+import java.nio.ByteBuffer;
 import java.util.HashMap;
+import org.apache.commons.io.IOUtils;
 
 /**
  * Class which provides a client that executes requests of two types:
@@ -68,7 +70,12 @@ public class Client {
         out.writeUTF(path);
         out.flush();
 
-        long sizeFile = in.readLong();
+        byte[] sizeFileArray = IOUtils.readFully(in, 8);
+        ByteBuffer buffer = ByteBuffer.allocate(Long.BYTES);
+        buffer.put(sizeFileArray);
+        buffer.flip();
+
+        long sizeFile = buffer.getLong();
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         byte[] buff = new byte[BUFFER_SIZE];
