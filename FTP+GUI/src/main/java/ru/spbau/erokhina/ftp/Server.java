@@ -1,5 +1,7 @@
 package ru.spbau.erokhina.ftp;
 
+import org.apache.commons.io.IOUtils;
+
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -80,7 +82,6 @@ public class Server {
                         path = in.readUTF();
 
                         if (queryType == 1) {
-                            //System.out.println("BOOOM");
                             List<Path> list;
 
                             try {
@@ -113,15 +114,11 @@ public class Server {
 
                             out.writeLong(sizeFile);
 
-                            byte[] buff = new byte[1024];
-                            long cur = 0;
-                            while (cur < sizeFile) {
-                                int toRead = (int) Math.min(1024, sizeFile - cur);
-
-                                fileIn.read(buff, 0, toRead);
-                                out.write(buff, 0, toRead);
-                                cur += toRead;
+                            if (sizeFile == 0) {
+                                return;
                             }
+
+                            IOUtils.copyLarge(fileIn, out);
 
                             out.flush();
                             if (fileIn != null) {

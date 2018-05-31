@@ -4,6 +4,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Class that stores current useful information.
@@ -15,7 +16,7 @@ class CurInfo {
     private int port = 7777;
     private Button highlighted;
     private String prevStyle;
-    private ArrayList<String> curDirectory;
+    private List<String> curDirectory;
     private Scene curScene;
     private Client curClient;
 
@@ -87,7 +88,7 @@ class CurInfo {
      * Gets the array of parts of current path.
      * @return the array of parts of current path
      */
-    ArrayList<String> getCurDirectory() {
+    List<String> getCurDirectory() {
         return curDirectory;
     }
 
@@ -95,7 +96,7 @@ class CurInfo {
      * Sets the array of parts of current path.
      * @param curDirectory the array of parts of current path
      */
-    void setCurDirectory(ArrayList<String> curDirectory) {
+    void setCurDirectory(List<String> curDirectory) {
         this.curDirectory = curDirectory;
     }
 

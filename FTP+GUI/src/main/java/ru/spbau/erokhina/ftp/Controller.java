@@ -12,6 +12,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import org.apache.commons.io.IOUtils;
 
 import java.io.*;
 import java.util.*;
@@ -47,7 +48,7 @@ public class Controller {
         loadDirectory(new ArrayList<>(Collections.singletonList(File.separator)), client, scene);
     }
 
-    private void loadDirectory(ArrayList<String> path, Client client, Scene scene) throws IOException {
+    private void loadDirectory(List<String> path, Client client, Scene scene) throws IOException {
         CurInfo.instance.setCurDirectory(path);
         CurInfo.instance.setCurClient(client);
         CurInfo.instance.setCurScene(scene);
@@ -60,7 +61,7 @@ public class Controller {
             int j = i;
 
             pathButtons[i].setOnAction(event -> {
-                ArrayList<String> newPath = new ArrayList<>(path.subList(0, j+1));
+                List<String> newPath = new ArrayList<>(path.subList(0, j + 1));
                 try {
                     loadDirectory(newPath, client, scene);
                 } catch (IOException e) {
@@ -76,7 +77,7 @@ public class Controller {
         VBox vBox = (VBox) scene.lookup("#curFileList");
         vBox.getChildren().clear();
 
-        HashMap<String, Boolean> fileList = client.list(String.join(File.separator, path));
+        Map<String, Boolean> fileList = client.list(String.join(File.separator, path));
         Set<Map.Entry<String, Boolean>> fileSet = fileList.entrySet();
 
         Set<Map.Entry<String, Boolean>> setOrder =
@@ -93,8 +94,11 @@ public class Controller {
 
         int i = 0;
         for (Map.Entry<String, Boolean> entry : setOrder) {
-            files[i] = new Button(entry.getKey());
-            if (entry.getValue()) {
+            String fileName = entry.getKey();
+            Boolean isDirectory = entry.getValue();
+
+            files[i] = new Button(fileName);
+            if (isDirectory) {
                 files[i].setStyle(Constants.instance.getDirectoryButtonStyle());
             } else {
                 files[i].setStyle(Constants.instance.getFileButtonStyle());
@@ -111,13 +115,12 @@ public class Controller {
                             CurInfo.instance.setHighlighted(null);
                         }
                         CurInfo.instance.setPrevStyle(files[j].getStyle());
-                        files[j]
-                                .setStyle(Constants.instance.getHighlightedButtonStyle());
+                        files[j].setStyle(Constants.instance.getHighlightedButtonStyle());
                         CurInfo.instance.setHighlighted(files[j]);
                     } else if (event.getClickCount() == 2) {
-                        if (entry.getValue()) {
+                        if (isDirectory) {
                             ArrayList<String> newPath = new ArrayList<>(path);
-                            newPath.add(entry.getKey());
+                            newPath.add(fileName);
 
                             try {
                                 loadDirectory(newPath, client, scene);
@@ -133,45 +136,7 @@ public class Controller {
                             if (alert.getResult() == ButtonType.YES) {
                                 Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
 
-                                FileChooser fileChooser = new FileChooser();
-                                fileChooser.setTitle("Open Resource File");
-                                File dest = fileChooser.showSaveDialog(stage);
-
-                                if (dest == null) {
-                                    alert.close();
-                                    return;
-                                }
-
-                                byte[] bytes;
-
-                                try {
-                                    bytes = client.get(String.join(File.separator, path) +
-                                            File.separator + entry.getKey());
-                                    int sizeFile = bytes.length;
-
-                                    dest.createNewFile();
-
-                                    ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(bytes);
-
-                                    FileOutputStream fileOutputStream = new FileOutputStream(dest);
-
-                                    byte[] buff = new byte[1024];
-                                    long cur = 0;
-                                    while (cur < sizeFile) {
-                                        int toRead = (int) Math.min(1024, sizeFile - cur);
-
-                                        byteArrayInputStream.read(buff, 0, toRead);
-                                        fileOutputStream.write(buff, 0, toRead);
-                                        cur += toRead;
-                                    }
-
-                                    fileOutputStream.close();
-                                    byteArrayInputStream.close();
-
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
-
+                                createCopiedFile(stage, alert, client, fileName, path);
                             }
                         }
                     }
@@ -184,12 +149,44 @@ public class Controller {
         vBox.getChildren().addAll(files);
     }
 
+    private void createCopiedFile(Stage stage, Alert alert, Client client, String fileName, List<String> path) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Open Resource File");
+        File dest = fileChooser.showSaveDialog(stage);
+
+        if (dest == null) {
+            alert.close();
+            return;
+        }
+
+        byte[] bytes;
+
+        try {
+            bytes = client.get(String.join(File.separator, path) +
+                    File.separator + fileName);
+
+            dest.createNewFile();
+
+            ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(bytes);
+
+            FileOutputStream fileOutputStream = new FileOutputStream(dest);
+
+            IOUtils.copyLarge(byteArrayInputStream, fileOutputStream);
+
+            fileOutputStream.close();
+            byteArrayInputStream.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     /**
      * OnAction method for Return Button.
      */
     public void returnButtonOnClick() throws IOException {
         if (CurInfo.instance.getCurDirectory().size() != 1) {
-            ArrayList<String> newList = CurInfo.instance.getCurDirectory();
+            List<String> newList = CurInfo.instance.getCurDirectory();
             newList.remove(CurInfo.instance.getCurDirectory().size() - 1);
             CurInfo.instance.setCurDirectory(newList);
         }
