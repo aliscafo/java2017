@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.*?>
+<?import java.lang.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="590.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.spbau.erokhina.ftp.Controller">
+   <children>
+      <TextField fx:id="hostName" focusTraversable="false" layoutX="220.0" layoutY="248.0" prefHeight="34.0" prefWidth="243.0" promptText="127.0.0.1">
+         <cursor>
+            <Cursor fx:constant="NONE" />
+         </cursor></TextField>
+      <Button fx:id="okButton" layoutX="246.0" layoutY="382.0" mnemonicParsing="false" onAction="#okButtonOnAction" prefHeight="48.0" prefWidth="109.0" text="OK">
+         <font>
+            <Font size="19.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="NONE" />
+         </cursor>
+      </Button>
+      <TextField alignment="TOP_CENTER" editable="false" focusTraversable="false" layoutX="125.0" layoutY="168.0" prefHeight="48.0" prefWidth="353.0" style="-fx-background-color: transparent;" text="Enter the host and the port name:">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </TextField>
+      <TextField fx:id="portName" focusTraversable="false" layoutX="220.0" layoutY="309.0" prefHeight="34.0" prefWidth="243.0" promptText="7777" />
+      <TextField alignment="TOP_CENTER" editable="false" layoutX="141.0" layoutY="245.0" prefHeight="34.0" prefWidth="79.0" style="-fx-background-color: transparent;" text="host:">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </TextField>
+      <TextField alignment="TOP_CENTER" editable="false" layoutX="141.0" layoutY="306.0" prefHeight="34.0" prefWidth="79.0" style="-fx-background-color: transparent;" text="port:">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </TextField>
+   </children>
+</AnchorPane>
